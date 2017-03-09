@@ -1,7 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "Renderer.h"
 #include "GameManager.h"
+#include "Button.h"
 
 class Game
 {
@@ -15,6 +18,7 @@ public:
 private:
 	Renderer* m_renderer;
 	GameManager* m_manager;
+	std::vector<UIElement*> m_ui;
 
     bool m_quit = false;
     void PollEvents();
