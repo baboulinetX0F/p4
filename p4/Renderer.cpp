@@ -5,8 +5,9 @@
 
 Renderer::Renderer()
 {
-	InitSDL();
+	InitSDL();	
 	CreateWindow(DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT);
+	InitDefaultAssets();
 }
 
 
@@ -38,6 +39,14 @@ void Renderer::InitSDL()
 	}
     if (TTF_Init() < 0)
         std::cout << "SDL_TTF could not initialize! SDL_Error: " << TTF_GetError() << std::endl;
+}
+
+void Renderer::InitDefaultAssets()
+{
+	// On charge la police par default
+	m_defaultFont = TTF_OpenFont("fonts/Roboto.ttf", 72);
+	if (m_defaultFont == nullptr)
+		std::cout << "ERROR : Cannot load default font (Roboto.ttf) " << TTF_GetError() << std::endl;
 }
 
 void Renderer::CreateWindow(unsigned int width, unsigned int height)
@@ -81,6 +90,11 @@ void Renderer::RenderTexture(SDL_Texture* tex, SDL_Rect* destRect)
         std::cout << "ERROR : Cannot Render Texture SDL_Error " << SDL_GetError() << std::endl;
         return;
     }
+}
+
+TTF_Font * Renderer::GetDefaultFont()
+{
+	return m_defaultFont;
 }
 
 SDL_Texture* Renderer::RenderText(std::string text, TTF_Font* font)

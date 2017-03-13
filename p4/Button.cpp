@@ -16,13 +16,19 @@ void Button::SetText(std::string newText)
 	m_text = newText;
 }
 
+// TODO : Mettre le text a la bonne échelle
 void Button::Draw(Renderer* renderer)
 {		
 	if (m_buttonTexture == nullptr)
 		m_buttonTexture = renderer->LoadTexture("textures/buttonTex.bmp");
+
+	if (m_textTexture == nullptr)
+		m_textTexture = renderer->RenderText("Text Button", renderer->GetDefaultFont());
 	
 	if (m_buttonTexture != nullptr)
 		renderer->RenderTexture(m_buttonTexture,&m_pos);
+	if (m_textTexture != nullptr)
+		renderer->RenderTexture(m_textTexture, &m_pos);
 }
 
 void Button::HandleEvents(SDL_Event e)

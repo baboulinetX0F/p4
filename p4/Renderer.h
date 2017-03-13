@@ -24,13 +24,17 @@ public:
     SDL_Texture* RenderText(std::string text, TTF_Font* font);
     void RenderTexture(SDL_Texture* tex, SDL_Rect* destRect);
 
+	TTF_Font* GetDefaultFont();
+
 
 private:
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
+	TTF_Font* m_defaultFont;
 
 	/* Initialise le sous-systeme video de SDL */
 	void InitSDL();
+	void InitDefaultAssets();
 
 	/* Cree la fenetre principale avec les dimensions passés en paramètres */
 	void CreateWindow(unsigned int width, unsigned int height);
