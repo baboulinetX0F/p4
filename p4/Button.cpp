@@ -20,15 +20,21 @@ void Button::SetText(std::string newText)
 void Button::Draw(Renderer* renderer)
 {		
 	if (m_buttonTexture == nullptr)
-		m_buttonTexture = renderer->LoadTexture("textures/buttonTex.bmp");
+        m_buttonTexture = renderer->LoadTexture("textures/buttonTex.bmp");
 
 	if (m_textTexture == nullptr)
-		m_textTexture = renderer->RenderText("Text Button", renderer->GetDefaultFont());
+        m_textTexture = renderer->RenderText(m_text, renderer->GetDefaultFont());
 	
-	if (m_buttonTexture != nullptr)
-		renderer->RenderTexture(m_buttonTexture,&m_pos);
-	if (m_textTexture != nullptr)
-		renderer->RenderTexture(m_textTexture, &m_pos);
+    // TODO : Ajouter Rendu dans le cas onClicked
+    if (isHovered)
+        renderer->RenderTexture(m_buttonHoveredTexture,&m_pos);
+    else
+        renderer->RenderTexture(m_buttonTexture,&m_pos);
+
+    if (m_text.length() > 0) {
+        if (m_textTexture != nullptr)
+            renderer->RenderTexture(m_textTexture, &m_pos);
+    }
 }
 
 void Button::HandleEvents(SDL_Event e)
@@ -42,4 +48,19 @@ void Button::HandleEvents(SDL_Event e)
 		if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH()))
 			std::cout << ("Button Clicked\n");
 	}
+    else if (e.type = SDL_MOUSEMOTION)
+    {
+        int x, y;
+        SDL_GetMouseState(&x, &y);
+
+        if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH()))
+        {
+            if (!isHovered)
+                isHovered = true;
+        }
+        else {
+            if (isHovered)
+                isHovered = false;
+        }
+    }
 }

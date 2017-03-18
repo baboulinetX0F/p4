@@ -126,14 +126,19 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PGrid.cpp" />
+    <ClCompile Include="PGridElem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="PGrid.h" />
+    <ClInclude Include="PGridElem.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="UIElement.h" />
   </ItemGroup>

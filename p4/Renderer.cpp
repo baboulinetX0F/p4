@@ -44,9 +44,13 @@ void Renderer::InitSDL()
 void Renderer::InitDefaultAssets()
 {
 	// On charge la police par default
-	m_defaultFont = TTF_OpenFont("fonts/Roboto.ttf", 72);
+    m_defaultFont = TTF_OpenFont("fonts/Roboto.ttf", 72);
 	if (m_defaultFont == nullptr)
 		std::cout << "ERROR : Cannot load default font (Roboto.ttf) " << TTF_GetError() << std::endl;
+
+    m_defaultTex = LoadTexture("textures/placeholder.bmp");
+    if (m_defaultTex == nullptr)
+        std::cout << "ERROR : Cannot load default texture (placeholder.bmp)\n";
 }
 
 void Renderer::CreateWindow(unsigned int width, unsigned int height)
@@ -81,15 +85,25 @@ SDL_Texture* Renderer::LoadTexture(std::string filePath)
             tmpSurface = nullptr;
         }
     }
-    return outputTex;
+
+    if (outputTex == nullptr && m_defaultTex != nullptr)
+        return m_defaultTex;
+    else
+        return outputTex;
 }
 
 void Renderer::RenderTexture(SDL_Texture* tex, SDL_Rect* destRect)
-{
-    if (SDL_RenderCopy(m_renderer,tex,NULL,destRect) < 0) {
-        std::cout << "ERROR : Cannot Render Texture SDL_Error " << SDL_GetError() << std::endl;
+{    
+    SDL_Texture* texture;
+    if (tex == nullptr && m_defaultTex != nullptr)
+        texture = m_defaultTex;
+    else
+        texture = tex;
+
+    if (SDL_RenderCopy(m_renderer,texture,NULL,destRect) < 0) {
+        std::cout << "ERROR : Cannot Render Texture SDL_Error: " << SDL_GetError() << std::endl;
         return;
-    }
+   }
 }
 
 TTF_Font * Renderer::GetDefaultFont()

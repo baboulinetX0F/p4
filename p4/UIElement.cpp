@@ -23,6 +23,16 @@ void UIElement::SetSize(int w, int h)
 	m_pos.h = h;
 }
 
+void UIElement::SetZOrder(int z)
+{
+    m_zOrder = z;
+}
+
+void UIElement::SetVisible(bool visibility)
+{
+    m_visibility = visibility;
+}
+
 int UIElement::GetX()
 {
 	return m_pos.x;
@@ -41,5 +51,10 @@ int UIElement::GetW()
 int UIElement::GetH()
 {
 	return m_pos.h;
+}
+
+bool UIElement::isVisible()
+{
+    return m_visibility;
 }
 

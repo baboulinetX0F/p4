@@ -2,9 +2,10 @@
 
 #include <string>
 
-
 #include "UIElement.h"
 
+static const int DEFAULT_BUTTON_TEXT_MARGIN = 10;
+static const char* DEFAULT_TEXT_BUTTON = "Default Text";
 
 class Button : public UIElement
 {
@@ -13,14 +14,20 @@ public:
 	~Button();
 
 	void SetText(std::string newText);
-	void Draw(Renderer* renderer);
+    virtual void Draw(Renderer* renderer);
 
-	void HandleEvents(SDL_Event e);
+    virtual void HandleEvents(SDL_Event e);
 
 private:
-	std::string m_text;
+    bool isHovered = false;
+    bool isClicked = false;
 
-	SDL_Texture* m_buttonTexture;
-	SDL_Texture* m_textTexture;
+    std::string m_text = DEFAULT_TEXT_BUTTON;
+
+    SDL_Texture* m_buttonTexture = nullptr;
+    SDL_Texture* m_buttonHoveredTexture = nullptr;
+    SDL_Texture* m_buttonClickedTexture = nullptr;
+
+    SDL_Texture* m_textTexture = nullptr;
 };
 

@@ -16,23 +16,21 @@ Game::~Game()
 }
 
 void Game::GameLoop()
-{	
-	Button button = Button();
-	button.SetPos(15, 15);
-	button.SetSize(230, 60);
-	m_ui.push_back(&button);
-
-	while (!m_quit)
+{
+    UISetup();
+    while (!m_quit)
     {
         PollEvents();
         m_renderer->Clear();
         m_manager->Update();
-		button.Draw(m_renderer);
+
+        for (unsigned int i = 0; i < m_ui.size(); i++)
+            m_ui.at(i)->Draw(m_renderer);
+
         m_renderer->Render();
     }
 }
 
-// TODO : Peut etre bouger dans une classe input
 void Game::PollEvents()
 {
     SDL_Event e;
@@ -42,8 +40,26 @@ void Game::PollEvents()
 			m_quit = true;
 		else
 		{
-			for (unsigned int i = 0; i < m_ui.size(); i++)
-				m_ui.at(i)->HandleEvents(e);
+            for (unsigned int i = 0; i < m_ui.size(); i++)
+                m_ui.at(i)->HandleEvents(e);
 		}
 	}
+}
+
+void Game::UISetup()
+{
+    Image* img = new Image("textures/background.bmp");
+    img->SetPos(0,0);
+    img->SetSize(DEFAULT_WINDOW_WIDTH,DEFAULT_WINDOW_HEIGHT);
+    m_ui.push_back(img);
+
+    Button* button = new Button();
+    button->SetPos(1280-115, 15);
+    button->SetSize(115, 30);
+    m_ui.push_back(button);
+
+    PGridElem* elem = new PGridElem();
+    elem->SetPos(30, 45);
+    elem->SetSize(115, 30);
+    m_ui.push_back(elem);
 }

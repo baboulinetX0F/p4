@@ -5,8 +5,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
-const unsigned int DEFAULT_WINDOW_WIDTH = 800;
-const unsigned int DEFAULT_WINDOW_HEIGHT = 600;
+const unsigned int DEFAULT_WINDOW_WIDTH = 1280;
+const unsigned int DEFAULT_WINDOW_HEIGHT = 720;
 const SDL_Color DEFAULT_FONT_COLOR = { 255, 255, 255 };
 
 
@@ -30,7 +30,10 @@ public:
 private:
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
+
+    // Default Assets
 	TTF_Font* m_defaultFont;
+    SDL_Texture* m_defaultTex;
 
 	/* Initialise le sous-systeme video de SDL */
 	void InitSDL();

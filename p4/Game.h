@@ -5,6 +5,8 @@
 #include "Renderer.h"
 #include "GameManager.h"
 #include "Button.h"
+#include "Image.h"
+#include "PGridElem.h"
 
 class Game
 {
@@ -22,5 +24,7 @@ private:
 
     bool m_quit = false;
     void PollEvents();
+
+    void UISetup();
 };
 
