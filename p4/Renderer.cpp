@@ -39,6 +39,7 @@ void Renderer::InitSDL()
 	}
     if (TTF_Init() < 0)
         std::cout << "SDL_TTF could not initialize! SDL_Error: " << TTF_GetError() << std::endl;
+	
 }
 
 void Renderer::InitDefaultAssets()

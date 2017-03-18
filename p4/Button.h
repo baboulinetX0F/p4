@@ -18,7 +18,7 @@ public:
 
     virtual void HandleEvents(SDL_Event e);
 
-private:
+protected:
     bool isHovered = false;
     bool isClicked = false;
 

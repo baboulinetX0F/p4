@@ -1,5 +1,7 @@
-#include "UIElement.h"
+#include <vector>
+
 #include "PGridElem.h"
+#include "UIElement.h"
 
 class PGrid : public UIElement
 {
@@ -11,5 +13,7 @@ public:
 	void HandleEvents(SDL_Event e);
 
 private:
-	//std::vector<PGridElem> m_gridElem;
+	std::vector<PGridElem> m_gridElem;
+
+	void InitGrid();
 };

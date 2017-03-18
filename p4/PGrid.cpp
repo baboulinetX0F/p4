@@ -15,3 +15,8 @@ void PGrid::Draw(Renderer* renderer)
 void PGrid::HandleEvents(SDL_Event e)
 {
 }
+
+void PGrid::InitGrid()
+{
+
+}
