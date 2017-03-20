@@ -13,21 +13,17 @@ public:
 	Button();
 	~Button();
 
-	void SetText(std::string newText);
-    void SetAction(void(GameManager::*funcPtr)(void));
+	void SetText(std::string newText);   
 
     virtual void Draw(Renderer* renderer);
     virtual void HandleEvents(SDL_Event e);
-
-
 
 protected:
     bool isHovered = false;
     bool isClicked = false;
 
     std::string m_text = DEFAULT_TEXT_BUTTON;
-
-    void(GameManager::*actionPtr)(void);
+	  
 
     SDL_Texture* m_buttonTexture = nullptr;
     SDL_Texture* m_buttonHoveredTexture = nullptr;

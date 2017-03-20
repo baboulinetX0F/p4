@@ -33,27 +33,27 @@ void UIElement::SetVisible(bool visibility)
     m_visibility = visibility;
 }
 
-int UIElement::GetX()
+int UIElement::GetX() const
 {
 	return m_pos.x;
 }
 
-int UIElement::GetY()
+int UIElement::GetY() const
 {
 	return m_pos.y;
 }
 
-int UIElement::GetW()
+int UIElement::GetW() const
 {
 	return m_pos.w;
 }
 
-int UIElement::GetH()
+int UIElement::GetH() const
 {
 	return m_pos.h;
 }
 
-bool UIElement::isVisible()
+bool UIElement::isVisible() const
 {
     return m_visibility;
 }

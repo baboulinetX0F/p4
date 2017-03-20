@@ -95,12 +95,12 @@ void PGrid::Element::HandleEvents(SDL_Event e)
     }
 }
 
-const int PGrid::Element::GetGridX()
+int PGrid::Element::GetGridX() const
 {
     return m_gridX;
 }
 
-const int PGrid::Element::GetGridY()
+int PGrid::Element::GetGridY() const
 {
     return m_gridY;
 }

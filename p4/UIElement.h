@@ -14,12 +14,12 @@ public:
     void SetZOrder(int z);
     void SetVisible(bool visibility);
 
-	int GetX();
-	int GetY();
-	int GetW();
-	int GetH();
+	int GetX() const;
+	int GetY() const;
+	int GetW() const;
+	int GetH() const;
 
-    bool isVisible();
+    bool isVisible() const;
 
 	virtual void Draw(Renderer* renderer) = 0;
 	virtual void HandleEvents(SDL_Event e) = 0;

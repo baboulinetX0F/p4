@@ -25,8 +25,8 @@ private:
                 void Draw(Renderer* renderer);
                 void HandleEvents(SDL_Event e);
 
-                const int GetGridX();
-                const int GetGridY();
+                int GetGridX() const;
+                int GetGridY() const;
         private:
                 PGrid* m_parentGrid;
                 int m_gridX, m_gridY;
@@ -41,9 +41,9 @@ public:
 	void HandleEvents(SDL_Event e);
 
 	void SetPos(int x, int y);        
-        void UpdateGrid();
+    void UpdateGrid();
 
-        void OnGridElemClicked(Element* e);
+    void OnGridElemClicked(Element* e);
 
 private:
 	std::vector<Element> m_gridElements;

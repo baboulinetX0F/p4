@@ -26,7 +26,7 @@ public:
     void RenderTexture(SDL_Texture* tex, SDL_Rect* destRect);
 	void RenderFillRect(SDL_Rect* rect, Uint8 r, Uint8 g, Uint8 b);
 
-	TTF_Font* GetDefaultFont();
+	TTF_Font* GetDefaultFont() const;
 
 
 private:

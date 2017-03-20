@@ -117,7 +117,7 @@ void Renderer::RenderFillRect(SDL_Rect * rect, Uint8 r, Uint8 g, Uint8 b)
 	SDL_RenderFillRect(m_renderer, rect);
 }
 
-TTF_Font * Renderer::GetDefaultFont()
+TTF_Font * Renderer::GetDefaultFont() const
 {
 	return m_defaultFont;
 }
