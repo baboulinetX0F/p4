@@ -107,6 +107,12 @@ void Renderer::RenderTexture(SDL_Texture* tex, SDL_Rect* destRect)
    }
 }
 
+void Renderer::RenderFillRect(SDL_Rect * rect, Uint8 r, Uint8 g, Uint8 b)
+{
+	SDL_SetRenderDrawColor(m_renderer, r, g, b, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(m_renderer, rect);
+}
+
 TTF_Font * Renderer::GetDefaultFont()
 {
 	return m_defaultFont;

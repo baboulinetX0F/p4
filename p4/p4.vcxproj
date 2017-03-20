@@ -129,9 +129,9 @@
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PGrid.cpp" />
-    <ClCompile Include="PGridElem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
@@ -139,9 +139,9 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="PGrid.h" />
-    <ClInclude Include="PGridElem.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="UIElement.h" />
+    <ClInclude Include="UIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

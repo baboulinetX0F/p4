@@ -23,6 +23,7 @@ public:
     SDL_Texture* LoadTexture(std::string filePath);
     SDL_Texture* RenderText(std::string text, TTF_Font* font);
     void RenderTexture(SDL_Texture* tex, SDL_Rect* destRect);
+	void RenderFillRect(SDL_Rect* rect, Uint8 r, Uint8 g, Uint8 b);
 
 	TTF_Font* GetDefaultFont();
 

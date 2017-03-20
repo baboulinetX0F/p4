@@ -1,7 +1,7 @@
-#include <vector>
+#pragma once
+#include "Button.h"
 
-#include "PGridElem.h"
-#include "UIElement.h"
+#include <vector>
 
 class PGrid : public UIElement
 {
@@ -13,7 +13,18 @@ public:
 	void HandleEvents(SDL_Event e);
 
 private:
-	std::vector<PGridElem> m_gridElem;
+	class Element : public Button
+	{
+	public:
+		Element(PGrid* grid);
+		~Element();
+	private:
+		PGrid* m_parentGrid;
+	};
+
+private:
+	std::vector<Element> m_gridElements;
 
 	void InitGrid();
 };
+

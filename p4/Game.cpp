@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-
-
 Game::Game()
 {
 	m_renderer = new Renderer();
@@ -56,10 +54,10 @@ void Game::UISetup()
     Button* button = new Button();
     button->SetPos(1280-115, 15);
     button->SetSize(115, 30);
-    m_ui.push_back(button);
+    m_ui.push_back(button); 
 
-    PGridElem* elem = new PGridElem();
-    elem->SetPos(30, 45);
-    elem->SetSize(115, 30);
-    m_ui.push_back(elem);
+	PGrid* grid = new PGrid();
+	//grid->SetPos(200,100);
+	grid->SetSize(300, 350);
+	m_ui.push_back(grid);
 }

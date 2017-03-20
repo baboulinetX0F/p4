@@ -6,7 +6,7 @@
 #include "GameManager.h"
 #include "Button.h"
 #include "Image.h"
-#include "PGridElem.h"
+#include "PGrid.h"
 
 class Game
 {
