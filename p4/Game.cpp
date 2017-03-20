@@ -57,7 +57,7 @@ void Game::UISetup()
     m_ui.push_back(button); 
 
 	PGrid* grid = new PGrid();
-	//grid->SetPos(200,100);
-	grid->SetSize(300, 350);
+	grid->SetPos(200,100);
+	grid->SetSize(350, 300);
 	m_ui.push_back(grid);
 }

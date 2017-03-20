@@ -12,14 +12,20 @@ public:
 	void Draw(Renderer* renderer);
 	void HandleEvents(SDL_Event e);
 
+	void SetPos(int x, int y);
+
 private:
 	class Element : public Button
 	{
 	public:
 		Element(PGrid* grid);
 		~Element();
+
+		void SetGridPos(int x, int y);
+		void Draw(Renderer* renderer);
 	private:
 		PGrid* m_parentGrid;
+		int m_gridX, m_gridY;
 	};
 
 private:
