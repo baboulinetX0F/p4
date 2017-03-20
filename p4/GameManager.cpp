@@ -4,6 +4,7 @@
 
 GameManager::GameManager()
 {
+    InitGrid();
 }
 
 
@@ -13,7 +14,11 @@ GameManager::~GameManager()
 
 void GameManager::Update()
 {
-	CheckWin();
+    if (!m_playerTurn) {
+        PushPiece(RED,1);
+        m_playerTurn = true;
+    }
+    CheckWin();
 }
 
 void GameManager::PushPiece(CASE_STATE color, int column)
@@ -37,12 +42,17 @@ void GameManager::InitGrid()
 	}
 }
 
+CASE_STATE GameManager::GetGridValAt(int x, int y)
+{
+    return m_grid[x][y];
+}
+
 unsigned int GameManager::GetColHeight(int column)
 {
 	unsigned int count = 0;
-	for (unsigned int y = NUM_LINES; y >= 0; y--)
+    for (unsigned int y = 0; y < NUM_LINES; y++)
 	{
-		if (m_grid[y][column] != CASE_STATE::EMPTY)
+        if (m_grid[column][y] != CASE_STATE::EMPTY)
 			count++;
 	}
 	return count;

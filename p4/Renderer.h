@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -35,6 +36,7 @@ private:
     // Default Assets
 	TTF_Font* m_defaultFont;
     SDL_Texture* m_defaultTex;
+    std::map<std::string,SDL_Texture*> m_textureAtlas;
 
 	/* Initialise le sous-systeme video de SDL */
 	void InitSDL();

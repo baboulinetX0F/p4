@@ -72,20 +72,24 @@ SDL_Texture* Renderer::LoadTexture(std::string filePath)
     SDL_Surface* tmpSurface = nullptr;
 
     // TODO : Ajouter un texture atlas pour éviter le chargement de doublons
-    tmpSurface = SDL_LoadBMP(filePath.c_str());
-    if (tmpSurface == nullptr) {
-        std::cout << "ERROR : Cannot load Image " << filePath << "SDL_Error : " << SDL_GetError() << std::endl;
-    }
-    else {
-        outputTex = SDL_CreateTextureFromSurface(this->m_renderer, tmpSurface);
-        if (outputTex == nullptr) {
-            std::cout << "ERROR : Cannot convert Surface into Texture SDL_Error :" << SDL_GetError() << std::endl;
+    if (m_textureAtlas.count(filePath) == 0) {
+        tmpSurface = SDL_LoadBMP(filePath.c_str());
+        if (tmpSurface == nullptr) {
+            std::cout << "ERROR : Cannot load Image " << filePath << "SDL_Error : " << SDL_GetError() << std::endl;
         }
         else {
-            SDL_FreeSurface(tmpSurface);
-            tmpSurface = nullptr;
+            m_textureAtlas[filePath] = SDL_CreateTextureFromSurface(this->m_renderer, tmpSurface);
+            if (outputTex == nullptr) {
+               std::cout << "ERROR : Cannot convert Surface into Texture SDL_Error :" << SDL_GetError() << std::endl;
+            }
+            else {
+                SDL_FreeSurface(tmpSurface);
+                tmpSurface = nullptr;
+            }
         }
     }
+
+    outputTex = m_textureAtlas[filePath];
 
     if (outputTex == nullptr && m_defaultTex != nullptr)
         return m_defaultTex;

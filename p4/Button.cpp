@@ -39,14 +39,19 @@ void Button::Draw(Renderer* renderer)
 
 void Button::HandleEvents(SDL_Event e)
 {
-	// En cas d'event clic gauche
+    if (isClicked)
+        isClicked = false;
+
+    // En cas d'event clic gauche
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
 	{
 		int x, y;
 		SDL_GetMouseState(&x, &y);
 
-		if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH()))
-			std::cout << ("Button Clicked\n");
+        if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH())){
+            std::cout << ("Button Clicked\n");
+            isClicked = true;
+        }
 	}
     else if (e.type = SDL_MOUSEMOTION)
     {

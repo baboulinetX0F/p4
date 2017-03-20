@@ -9,8 +9,8 @@ enum CASE_STATE
 };
 
 // Variable par defaut de la grille de jeu
-static const int NUM_COL = 6;
-static const int NUM_LINES = 7;
+static const int NUM_COL = 7;
+static const int NUM_LINES = 6;
 
 
 /* GameManager : Gère la logique du jeu */
@@ -25,9 +25,14 @@ public:
 	// Insert une piece de couleur (color) a la colonne (column)
 	void PushPiece(CASE_STATE color, int column);
 
+    CASE_STATE GetGridValAt(int x, int y);
+
+    bool m_playerTurn = true;
+
 private:
 	/* m_grid : Grille de jeu */
-	CASE_STATE m_grid[NUM_COL][NUM_LINES];
+    CASE_STATE m_grid[NUM_COL][NUM_LINES];
+
 
 	/* Initialise la grille de jeu */
 	void InitGrid();
