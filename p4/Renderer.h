@@ -33,10 +33,11 @@ private:
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 
+	std::map<std::string, SDL_Texture*> m_textureAtlas;
+
     // Default Assets
 	TTF_Font* m_defaultFont;
-    SDL_Texture* m_defaultTex;
-    std::map<std::string,SDL_Texture*> m_textureAtlas;
+    SDL_Texture* m_defaultTex;    
 
 	/* Initialise le sous-systeme video de SDL */
 	void InitSDL();

@@ -4,7 +4,7 @@
 
 #include <vector>
 
-static const int CASE_DEFAULT_SIZE = 50;
+static const int CASE_DEFAULT_SIZE = 100;
 
 // Classe speciale pour le jeu permettant d'afficher la grille de jeu
 // en passant le GameManager en paramètre pour le constructeur.
@@ -47,7 +47,7 @@ public:
 
 private:
 	std::vector<Element> m_gridElements;
-        GameManager* m_gameManager = nullptr;
+    GameManager* m_gameManager = nullptr;
 
 	void InitGrid();
 };

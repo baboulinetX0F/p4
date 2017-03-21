@@ -1,6 +1,5 @@
 #include "PGrid.h"
 
-#include <iostream>
 
 PGrid::PGrid(GameManager* gameManager)
 {
@@ -66,8 +65,7 @@ void PGrid::UpdateGrid()
 void PGrid::OnGridElemClicked(Element* e)
 {
     if (e != nullptr && m_gameManager != nullptr && m_gameManager->m_playerTurn) {
-        m_gameManager->PushPiece(YELLOW,e->GetGridX());
-        m_gameManager->m_playerTurn = false;
+        m_gameManager->Jouer(COUL_JOUEUR,e->GetGridX());
         UpdateGrid();
     }
 }

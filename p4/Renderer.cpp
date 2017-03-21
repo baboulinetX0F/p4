@@ -70,8 +70,7 @@ SDL_Texture* Renderer::LoadTexture(std::string filePath)
 {
     SDL_Texture* outputTex = nullptr;
     SDL_Surface* tmpSurface = nullptr;
-
-    // TODO : Ajouter un texture atlas pour éviter le chargement de doublons
+	    
     if (m_textureAtlas.count(filePath) == 0) {
         tmpSurface = SDL_LoadBMP(filePath.c_str());
         if (tmpSurface == nullptr) {
@@ -80,7 +79,7 @@ SDL_Texture* Renderer::LoadTexture(std::string filePath)
         else {
             m_textureAtlas[filePath] = SDL_CreateTextureFromSurface(this->m_renderer, tmpSurface);
             if (outputTex == nullptr) {
-               std::cout << "ERROR : Cannot convert Surface into Texture SDL_Error :" << SDL_GetError() << std::endl;
+               std::cout << "ERROR : Cannot convert Surface into Texture SDL_Error :" << filePath << std::endl;
             }
             else {
                 SDL_FreeSurface(tmpSurface);

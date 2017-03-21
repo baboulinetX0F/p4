@@ -3,6 +3,8 @@
 #include "Renderer.h"
 #include "GameManager.h"
 
+
+// Classe Virtuelle servant de base a définir un objet de l'interface utilisateur
 class UIElement
 {
 public:
