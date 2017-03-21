@@ -55,9 +55,11 @@ void GameManager::PushPiece(CASE_STATE color, unsigned short int column)
 
 void GameManager::Jouer(CASE_STATE color, unsigned short int column)
 {
-	PushPiece(color, column);
-	m_playerTurn = !m_playerTurn;
-	m_gameState = test();	
+	if (m_gameState == 0) {
+		PushPiece(color, column);
+		m_playerTurn = !m_playerTurn;
+		m_gameState = test();
+	}
 }
 
 void GameManager::PullPiece(unsigned short int column)
@@ -250,9 +252,7 @@ void GameManager::IA(unsigned short int profondeur)
 			PullPiece(i);
 		}
 	}
-	PushPiece(COUL_IA, maxi);
-	// TODO : make safe
-	m_playerTurn = true;
+	Jouer(COUL_IA, maxi);
 }
 
 short int GameManager::Min(unsigned short int profondeur, unsigned short int lastPion)
