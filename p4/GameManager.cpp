@@ -21,7 +21,7 @@ void GameManager::Update()
 	}
 }
 
-unsigned short int GameManager::CompareGrid() {
+short int GameManager::CompareGrid() {
 	for (int x = 0; x < NUM_COL; x++) {
 		for (int y = 0; y < NUM_LINES; y++) {
 			if (m_grid[x][y] != cpy_grid[x][y]) {
@@ -33,7 +33,7 @@ unsigned short int GameManager::CompareGrid() {
 	return 0;
 }
 
-short int GameManager::test()
+short int GameManager::CheckWin()
 {
 	short int colDiff = CompareGrid(), etat;
 	short int *tabEval = Eval(colDiff);
@@ -58,7 +58,7 @@ void GameManager::Jouer(CASE_STATE color, unsigned short int column)
 	if (m_gameState == 0) {
 		PushPiece(color, column);
 		m_playerTurn = !m_playerTurn;
-		m_gameState = test();
+		m_gameState = CheckWin();
 	}
 }
 
@@ -80,7 +80,7 @@ void GameManager::InitGrid()
 	}
 }
 
-CASE_STATE GameManager::GetGridValAt(int x, int y)
+CASE_STATE GameManager::GetGridValAt(short int x, short int y)
 {
 	return m_grid[x][y];
 }
@@ -108,7 +108,7 @@ short int GameManager::FinPartie(unsigned short int etat) {
 	}
 }
 
-unsigned short int GameManager::CheckEtat(short int serieDeQuatre, unsigned short int column) {
+unsigned short int GameManager::CheckEtat(short int serieDeQuatre, short int column) {
 	CASE_STATE couleur = m_grid[column][GetColHeight(column) - 1];
 	if (serieDeQuatre && (couleur == COUL_IA))
 		return 1; // IA gagne 
