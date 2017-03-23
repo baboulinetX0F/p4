@@ -311,3 +311,103 @@ short int GameManager::Max(unsigned short int profondeur, unsigned short int las
 	}
 
 }
+
+void GameManager::IaAB(unsigned short int profondeur) {
+	short int maxi, alpha(-1000), beta(1000), tmp;
+
+	for (unsigned short int i = 0; i < NUM_COL; i++)
+	{
+		if (GetColHeight(i) < NUM_LINES)
+		{
+			PushPiece(COUL_IA, i);
+
+			tmp = MinAB(profondeur - 1, i, alpha, beta);
+
+			PullPiece(i);
+
+			if (tmp > alpha) {
+				alpha = tmp;
+				maxi = i;
+			}
+		}
+	}
+	PushPiece(COUL_IA, maxi);
+}
+
+short int GameManager::MinAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta) {
+
+	short int *tabEval = Eval(lastPion);
+	short int serieDeQuatre = tabEval[1], poids = tabEval[0];
+	delete[] tabEval;
+
+	unsigned short int etat = CheckEtat(serieDeQuatre, lastPion);
+
+	if (etat != 0) {
+		return FinPartie(etat);
+	}
+	else if (profondeur == 0) {
+		return poids;
+	}
+	else {
+		short int tmp;
+		for (unsigned short int i = 0; i < NUM_COL; i++)
+		{
+			if (GetColHeight(i) < NUM_LINES)
+			{
+				PushPiece(COUL_JOUEUR, i);
+
+				tmp = MaxAB(profondeur - 1, i, alpha, beta);
+
+				PullPiece(i);
+
+				if (tmp < beta) {
+					beta = tmp;
+				}
+				if ((beta + poids) <= alpha) {
+					return alpha;
+				}
+
+			}
+		}
+		return beta + poids;
+	}
+}
+
+short int GameManager::MaxAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta)
+{
+	short int *tabEval = Eval(lastPion);
+	short int serieDeQuatre = tabEval[1], poids = tabEval[0];
+	delete[] tabEval;
+
+	unsigned short int etat = CheckEtat(serieDeQuatre, lastPion);
+
+	if (etat != 0) {
+		return FinPartie(etat);
+	}
+	else if (profondeur == 0) {
+		return poids;
+	}
+	else {
+		short int tmp;
+		for (unsigned short int i = 0; i < NUM_COL; i++)
+		{
+			if (GetColHeight(i) < NUM_LINES)
+			{
+				PushPiece(COUL_IA, i);
+
+				tmp = MinAB(profondeur - 1, i, alpha, beta);
+
+				PullPiece(i);
+
+				if (tmp > alpha) {
+					alpha = tmp;
+				}
+				if ((alpha + poids) >= beta) {
+					return beta;
+				}
+
+			}
+		}
+		return alpha + poids;
+	}
+}
