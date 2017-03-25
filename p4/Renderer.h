@@ -8,7 +8,8 @@
 
 const unsigned int DEFAULT_WINDOW_WIDTH = 1280;
 const unsigned int DEFAULT_WINDOW_HEIGHT = 720;
-const SDL_Color DEFAULT_FONT_COLOR = { 255, 255, 255 };
+const SDL_Color FONT_COLOR_DEFAULT = { 255, 255, 255 };
+const SDL_Color CLEAR_COLOR_DEFAULT = { 38, 38, 38 };
 
 
 /* Renderer : Gère l'interface graphique et l'affichage de l'application */

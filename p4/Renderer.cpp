@@ -23,7 +23,8 @@ Renderer::~Renderer()
 
 void Renderer::Clear()
 {
-    SDL_RenderClear(m_renderer);
+	SDL_SetRenderDrawColor(m_renderer, CLEAR_COLOR_DEFAULT.r, CLEAR_COLOR_DEFAULT.g, CLEAR_COLOR_DEFAULT.b, 255);
+	SDL_RenderClear(m_renderer);
 }
 
 void Renderer::Render()
@@ -131,7 +132,7 @@ SDL_Texture* Renderer::RenderText(std::string text, TTF_Font* font)
     {
         SDL_Texture* outputTex = nullptr;
         SDL_Surface* tmpSurface;
-        tmpSurface = TTF_RenderText_Solid(font, text.c_str(), DEFAULT_FONT_COLOR);
+        tmpSurface = TTF_RenderText_Blended(font, text.c_str(), FONT_COLOR_DEFAULT);
         if (tmpSurface == nullptr)
             std::cout << "ERROR : Can't RenderText into Surface SDL_Error : " << SDL_GetError() << std::endl;
         else
