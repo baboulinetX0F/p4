@@ -60,6 +60,8 @@ public:
 	// Gére le tour de l'IA 
 	void IA(unsigned short int difficulty);
 
+	void IaAB(unsigned short int profondeur);
+
 private:
 
 	// Variable d'état du jeu : s'arrete ou continue
@@ -111,5 +113,9 @@ private:
 
 	// Parcour de l'arbre, recherche du Max
 	short int Max(unsigned short int difficulty, unsigned short int lastPion);
+
+	short int MinAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta);
+
+	short int MaxAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta);
 };
 
