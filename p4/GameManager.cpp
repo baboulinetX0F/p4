@@ -237,7 +237,7 @@ short int* GameManager::Eval(short int column) {
 void GameManager::IA(unsigned short int profondeur)
 {
 	short int max(-1000), tmp, maxi;
-	srand(time(NULL));
+	srand(static_cast<unsigned int>(time(NULL)));
 	for (unsigned short int i = 0; i < NUM_COL; i++)
 	{
 		if (GetColHeight(i) < NUM_LINES)
