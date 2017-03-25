@@ -4,7 +4,7 @@
 
 #include <vector>
 
-static const int CASE_DEFAULT_SIZE = 100;
+static const int CASE_SIZE_DEFAULT = 100;
 
 // Classe speciale pour le jeu permettant d'afficher la grille de jeu
 // en passant le GameManager en paramètre pour le constructeur.
@@ -34,13 +34,15 @@ private:
                 CASE_STATE m_state = CASE_STATE::EMPTY;
         };
 public:
-        PGrid(GameManager* gameManager);
+    PGrid(GameManager* gameManager);
 	~PGrid();
 
 	void Draw(Renderer* renderer);
 	void HandleEvents(SDL_Event e);
 
-	void SetPos(int x, int y);        
+	// Remplace les fonctions UIButton de base
+	void SetPos(int x, int y);
+
     void UpdateGrid();
 
     void OnGridElemClicked(Element* e);

@@ -46,18 +46,18 @@ void Game::PollEvents()
 
 void Game::UISetup()
 {
-    Image* img = new Image("textures/background.bmp");
-    img->SetPos(0,0);
-    img->SetSize(DEFAULT_WINDOW_WIDTH,DEFAULT_WINDOW_HEIGHT);
-    m_ui.push_back(img);
-
     Button* button = new Button();
-    button->SetPos(1280-115, 15);
-    button->SetSize(115, 30);
+    button->SetPos(1280-180, 15);
+    button->SetSize(180, 60);
+	button->SetText("Clear Grid");
     m_ui.push_back(button); 
+
+	button = new Button();
+	button->SetPos(1280 - 180, 95);
+	button->SetSize(180, 60);
+	m_ui.push_back(button);
 
     PGrid* grid = new PGrid(m_manager);
 	grid->SetPos(300,50);
-	//grid->SetSize(350, 300);
 	m_ui.push_back(grid);
 }
