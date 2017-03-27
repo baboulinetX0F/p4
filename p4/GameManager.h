@@ -31,9 +31,9 @@ class GameManager {
 
 public:
 
-	GameManager();
-	~GameManager();
-
+	// Retourne l'instance unique de GameManager
+	static GameManager& Instance();
+	
 	// Booléen pour savoir si c'est le tour du joueur (et gérer le tour IA par conséquent)
 	bool m_playerTurn = true;
 
@@ -41,15 +41,9 @@ public:
 	void Update();
 
 	// Place le pion du joueur Si c'est son tour
-	void Jouer(CASE_STATE color, unsigned short int column);
-
-	/* m_grid : Grille de jeu */
-	CASE_STATE m_grid[NUM_COL][NUM_LINES];
-	/* cpy_grid : copie de la Grille de jeu qui permet de savoir quel pion vient d'être joué */
-	CASE_STATE cpy_grid[NUM_COL][NUM_LINES];
-
-	/* Initialise la grille de jeu */
-	void InitGrid();
+	void Jouer(CASE_STATE color, unsigned short int column);	
+	
+	void Restart();
 
 	// Renvoie l'etat dune case
 	CASE_STATE GetGridValAt(short int x, short int y);
@@ -59,16 +53,37 @@ public:
 
 	// Gére le tour de l'IA 
 	void IA(unsigned short int difficulty);
-
+		
 	void IaAB(unsigned short int profondeur);
 
 private:
+	// Differents operations sur reference
+	GameManager& operator= (const GameManager&) {}
+	GameManager(const GameManager&) {}
+
+	// Instance du singleton
+	static GameManager m_instance;
+
+	// Constructeur et Destructeur
+	GameManager();
+	~GameManager();
+
+	/* m_grid : Grille de jeu */
+	CASE_STATE m_grid[NUM_COL][NUM_LINES];
+	/* cpy_grid : copie de la Grille de jeu qui permet de savoir quel pion vient d'être joué */
+	CASE_STATE cpy_grid[NUM_COL][NUM_LINES];
 
 	// Variable d'état du jeu : s'arrete ou continue
 	short int m_gameState = 0;
 
 	// Variable de difficulté de l'IA (à def par les choix joueur)
 	int m_difficulte = DIFFICULTE_MOYEN;
+
+	/* Initialise la grille de jeu */
+	void InitGrid();
+
+	// Vide les grilles (temporaire et principale)
+	void ClearGrid();
 
 	// Compare la grille de jeu et la copie et renvoie la premiére colonne différente trouvé
 	short int CompareGrid();

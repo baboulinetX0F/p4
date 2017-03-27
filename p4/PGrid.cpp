@@ -14,10 +14,16 @@ PGrid::~PGrid()
 
 void PGrid::Draw(Renderer * renderer)
 {
-        UpdateGrid();
+    UpdateGrid();
 
-        // Affichage fond de la grille
-	renderer->RenderFillRect(&m_pos, 255, 0, 0);
+	SDL_Rect contourRect = m_pos;
+	contourRect.x -= 3;
+	contourRect.y -= 3;
+	contourRect.w += 6;
+	contourRect.h += 6;
+
+    // Affichage fond de la grille
+	renderer->RenderFillRect(&contourRect, 255, 255, 255);
 
 	// Affichage les cases
 	for (unsigned int i = 0; i < m_gridElements.size(); i++)
@@ -40,17 +46,18 @@ void PGrid::InitGrid()
 {
 	Element* elem; 
 
-        for (int y = 0; y < NUM_LINES; y++)
+    for (int y = 0; y < NUM_LINES; y++)
 	{
-                for (int x = 0; x < NUM_COL; x++)
+        for (int x = 0; x < NUM_COL; x++)
 		{
                     elem = new Element(this);
                     elem->SetGridPos(x,y);
-                    elem->SetSize(CASE_DEFAULT_SIZE, CASE_DEFAULT_SIZE);
+                    elem->SetSize(CASE_SIZE_DEFAULT, CASE_SIZE_DEFAULT);
                     m_gridElements.push_back(*elem);
 		}
 	}
-        UpdateGrid();
+	UIElement::SetSize(NUM_COL * CASE_SIZE_DEFAULT, NUM_LINES * CASE_SIZE_DEFAULT);
+    UpdateGrid();
 }
 
 void PGrid::UpdateGrid()
@@ -111,7 +118,7 @@ void PGrid::Element::SetGridPos(int x, int y)
 
 void PGrid::Element::Draw(Renderer * renderer)
 {        
-        SetPos(m_parentGrid->GetX() + (m_gridX * CASE_DEFAULT_SIZE), ((NUM_LINES-1) - m_gridY) * CASE_DEFAULT_SIZE + m_parentGrid->GetY());
+        SetPos(m_parentGrid->GetX() + (m_gridX * CASE_SIZE_DEFAULT), ((NUM_LINES-1) - m_gridY) * CASE_SIZE_DEFAULT + m_parentGrid->GetY());
         switch(m_state)
         {
             case EMPTY:
