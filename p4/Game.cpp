@@ -5,7 +5,7 @@
 Game::Game()
 {
 	m_renderer = new Renderer();
-	m_manager = new GameManager();
+	m_manager = &GameManager::Instance();
 }
 
 
@@ -49,14 +49,10 @@ void Game::UISetup()
     Button* button = new Button();
     button->SetPos(1280-180, 15);
     button->SetSize(180, 60);
-	button->SetText("Clear Grid");
+	button->SetText("Restart");
+	button->SetActionOnClick(&GameManager::Restart);
     m_ui.push_back(button); 
-
-	button = new Button();
-	button->SetPos(1280 - 180, 95);
-	button->SetSize(180, 60);
-	m_ui.push_back(button);
-
+		
     PGrid* grid = new PGrid(m_manager);
 	grid->SetPos(300,50);
 	m_ui.push_back(grid);

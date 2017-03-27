@@ -15,6 +15,7 @@ public:
 	~Button();
 
 	void SetText(std::string newText);
+	void SetActionOnClick(void(GameManager::*ptr)(void));
 
     virtual void Draw(Renderer* renderer);
     virtual void HandleEvents(SDL_Event e);
@@ -32,10 +33,14 @@ protected:
 
     SDL_Texture* m_textTexture = nullptr;
 
+	void OnClick();
+
 private:
 	SDL_Rect m_textRect;
-	bool m_textUpdated = false;
+	bool m_textUpdated = false;	
 
 	void UpdateTextRender(Renderer * renderer);
+
+	void(GameManager::*m_ptrAction)(void) = nullptr;
 };
 

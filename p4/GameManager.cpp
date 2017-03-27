@@ -3,7 +3,12 @@
 #include <cstdlib>
 #include <iostream>
 
+GameManager GameManager::m_instance = GameManager();
 
+GameManager & GameManager::Instance()
+{
+	return m_instance;
+}
 
 GameManager::GameManager() {
 	InitGrid();
@@ -60,6 +65,13 @@ void GameManager::Jouer(CASE_STATE color, unsigned short int column)
 		m_playerTurn = !m_playerTurn;
 		m_gameState = CheckWin();
 	}
+}
+
+void GameManager::Restart()
+{
+	ClearGrid();
+	m_playerTurn = true;
+	m_gameState = 0;
 }
 
 void GameManager::PullPiece(unsigned short int column)
@@ -332,6 +344,16 @@ void GameManager::IaAB(unsigned short int profondeur) {
 		}
 	}
 	PushPiece(COUL_IA, maxi);
+}
+
+void GameManager::ClearGrid()
+{
+	for (int x = 0; x < NUM_COL; x++) {
+		for (int y = 0; y < NUM_LINES; y++) {
+			m_grid[x][y] = EMPTY;
+			cpy_grid[x][y] = m_grid[x][y];
+		}
+	}
 }
 
 short int GameManager::MinAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta) {

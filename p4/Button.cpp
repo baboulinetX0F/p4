@@ -13,8 +13,13 @@ Button::~Button()
 
 void Button::SetText(std::string newText)
 {
-	m_text = newText;
+	m_text = newText;	
 	m_textUpdated = false;
+}
+
+void Button::SetActionOnClick(void(GameManager::* ptr)(void))
+{
+	m_ptrAction = ptr;
 }
 
 void Button::Draw(Renderer* renderer)
@@ -63,6 +68,7 @@ void Button::HandleEvents(SDL_Event e)
         if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH())){
             std::cout << ("Button Clicked\n");
             isClicked = true;
+			OnClick();
         }
 	}
     else if (e.type = SDL_MOUSEMOTION)
@@ -80,6 +86,14 @@ void Button::HandleEvents(SDL_Event e)
                 isHovered = false;
         }
     }
+}
+
+void Button::OnClick()
+{
+	if (m_ptrAction != nullptr)
+	{
+		(GameManager::Instance().*m_ptrAction)();
+	}
 }
 
 void Button::UpdateTextRender(Renderer * renderer)
