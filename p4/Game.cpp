@@ -11,6 +11,7 @@ Game::Game()
 
 Game::~Game()
 {
+	delete m_renderer;
 }
 
 void Game::GameLoop()

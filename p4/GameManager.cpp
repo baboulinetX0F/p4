@@ -58,6 +58,7 @@ void GameManager::PushPiece(CASE_STATE color, unsigned short int column)
 	}
 }
 
+// TODO : Différencier joueur et IA dans jouer (cf m_playerTurn)
 void GameManager::Jouer(CASE_STATE color, unsigned short int column)
 {
 	if (m_gameState == 0) {
@@ -91,6 +92,8 @@ void GameManager::InitGrid()
 		}
 	}
 }
+
+short int GameManager::GetGameState() const { return m_gameState; }
 
 CASE_STATE GameManager::GetGridValAt(short int x, short int y)
 {
@@ -226,6 +229,7 @@ unsigned short int GameManager::DiagonaleM(short int x, short int y, CASE_STATE 
 	return size;
 }
 
+// TODO : Affiner fonction eval pareité des ligne
 short int* GameManager::Eval(short int column) {
 	short int positifNegatif;
 	short int *tabEval = new short int[2];
