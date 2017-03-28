@@ -30,27 +30,34 @@ private:
         private:
                 PGrid* m_parentGrid;
                 int m_gridX, m_gridY;
-
                 CASE_STATE m_state = CASE_STATE::EMPTY;
+
+                void OnClick();
         };
 public:
     PGrid(GameManager* gameManager);
-	~PGrid();
+    ~PGrid();
 
-	void Draw(Renderer* renderer);
-	void HandleEvents(SDL_Event e);
+    // Fonctions hérités de UIElement
+    void Draw(Renderer* renderer);
+    void HandleEvents(SDL_Event e);
 
-	// Remplace les fonctions UIButton de base
-	void SetPos(int x, int y);
+    // Remplace les fonctions UIButton de base
+    void SetPos(int x, int y);
+    void SetSize(int x, int y);
 
+    // Mets a jour les elements de grille
     void UpdateGrid();
 
     void OnGridElemClicked(Element* e);
 
 private:
-	std::vector<Element> m_gridElements;
+    std::vector<Element> m_gridElements;
     GameManager* m_gameManager = nullptr;
 
-	void InitGrid();
+    void InitGrid();
+
+    // Test un element de la colonne donnée est traversé par le curseur
+    bool IsColumnHovered(int column);
 };
 

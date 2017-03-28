@@ -17,12 +17,16 @@ public:
 	void SetText(std::string newText);
 	void SetActionOnClick(void(GameManager::*ptr)(void));
 
+    bool isHovered() const;
+	bool isClicked() const;
+
     virtual void Draw(Renderer* renderer);
     virtual void HandleEvents(SDL_Event e);
 
 protected:
-    bool isHovered = false;
-    bool isClicked = false;
+    // TODO : Renommer les variables et ajouter Getter isClicked
+    bool m_hovered = false;
+    bool m_clicked = false;
 
     std::string m_text = BUTTON_TEXT_DEFAULT;  
 
@@ -33,7 +37,7 @@ protected:
 
     SDL_Texture* m_textTexture = nullptr;
 
-	void OnClick();
+    virtual void OnClick();
 
 private:
 	SDL_Rect m_textRect;

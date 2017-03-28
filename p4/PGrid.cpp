@@ -16,24 +16,33 @@ void PGrid::Draw(Renderer * renderer)
 {
     UpdateGrid();
 
-	SDL_Rect contourRect = m_pos;
-	contourRect.x -= 3;
-	contourRect.y -= 3;
-	contourRect.w += 6;
-	contourRect.h += 6;
+    SDL_Rect contourRect = m_pos;
+    contourRect.x -= 3;
+    contourRect.y -= 3;
+    contourRect.w += 6;
+    contourRect.h += 6;
 
-    // Affichage fond de la grille
-	renderer->RenderFillRect(&contourRect, 255, 255, 255);
+    if (m_gameManager->GetGameState() == 2)
+    {
+        renderer->RenderTexture(renderer->LoadTexture("textures/victoire.bmp"), &contourRect);
+    }
+    else if (m_gameManager->GetGameState() == 1)
+        renderer->RenderTexture(renderer->LoadTexture("textures/defeat.bmp"), &contourRect);
+    else
+    {
+        // Affichage fond de la grille
+        renderer->RenderFillRect(&contourRect, 255, 255, 255);
 
-	// Affichage les cases
-	for (unsigned int i = 0; i < m_gridElements.size(); i++)
-		m_gridElements.at(i).Draw(renderer);
+        // Affichage les cases
+        for (unsigned int i = 0; i < m_gridElements.size(); i++)
+            m_gridElements.at(i).Draw(renderer);
+    }
 }
 
 void PGrid::HandleEvents(SDL_Event e)
 {
-	for (unsigned int i = 0; i < m_gridElements.size(); i++)
-		m_gridElements.at(i).HandleEvents(e);
+    for (unsigned int i = 0; i < m_gridElements.size(); i++)
+        m_gridElements.at(i).HandleEvents(e);
 }
 
 void PGrid::SetPos(int x, int y)
@@ -42,21 +51,20 @@ void PGrid::SetPos(int x, int y)
 	m_pos.y = y;
 }
 
+void PGrid::SetSize(int x, int y) { }
+
 void PGrid::InitGrid()
 {
-	Element* elem; 
-
-    for (int y = 0; y < NUM_LINES; y++)
-	{
-        for (int x = 0; x < NUM_COL; x++)
-		{
+    Element* elem;
+    for (int y = 0; y < NUM_LINES; y++) {
+        for (int x = 0; x < NUM_COL; x++) {
                     elem = new Element(this);
                     elem->SetGridPos(x,y);
                     elem->SetSize(CASE_SIZE_DEFAULT, CASE_SIZE_DEFAULT);
                     m_gridElements.push_back(*elem);
-		}
-	}
-	UIElement::SetSize(NUM_COL * CASE_SIZE_DEFAULT, NUM_LINES * CASE_SIZE_DEFAULT);
+        }
+    }
+    UIElement::SetSize(NUM_COL * CASE_SIZE_DEFAULT, NUM_LINES * CASE_SIZE_DEFAULT);
     UpdateGrid();
 }
 
@@ -93,11 +101,7 @@ void PGrid::Element::SetState(CASE_STATE state)
 
 void PGrid::Element::HandleEvents(SDL_Event e)
 {
-    Button::HandleEvents(e);
-
-    if (isClicked){
-        m_parentGrid->OnGridElemClicked(this);
-    }
+    Button::HandleEvents(e);   
 }
 
 int PGrid::Element::GetGridX() const
@@ -116,31 +120,52 @@ void PGrid::Element::SetGridPos(int x, int y)
 	m_gridY = y;
 }
 
+void PGrid::Element::OnClick()
+{
+    m_parentGrid->OnGridElemClicked(this);
+}
+
 void PGrid::Element::Draw(Renderer * renderer)
 {        
         SetPos(m_parentGrid->GetX() + (m_gridX * CASE_SIZE_DEFAULT), ((NUM_LINES-1) - m_gridY) * CASE_SIZE_DEFAULT + m_parentGrid->GetY());
         switch(m_state)
         {
             case EMPTY:
-                if (isHovered)
+                if (isHovered())
+                    m_buttonTexture = renderer->LoadTexture("textures/grid_elem_empty_highlighted.bmp");
+                else if (m_parentGrid->IsColumnHovered(m_gridX))
                     m_buttonTexture = renderer->LoadTexture("textures/grid_elem_empty_hovered.bmp");
                 else
                     m_buttonTexture = renderer->LoadTexture("textures/grid_elem_empty.bmp");
                 renderer->RenderTexture(m_buttonTexture, &m_pos);
             break;
             case YELLOW:
-                if (isHovered)
+                if (isHovered())
+                    m_buttonTexture = renderer->LoadTexture("textures/grid_elem_yellow_highlighted.bmp");
+                else if (m_parentGrid->IsColumnHovered(m_gridX))
                     m_buttonTexture = renderer->LoadTexture("textures/grid_elem_yellow_hovered.bmp");
                 else
                     m_buttonTexture = renderer->LoadTexture("textures/grid_elem_yellow.bmp");
                 renderer->RenderTexture(m_buttonTexture, &m_pos);
             break;
             case RED:
-                if (isHovered)
+                if (isHovered())
+                    m_buttonTexture = renderer->LoadTexture("textures/grid_elem_red_highlighted.bmp");
+                else if (m_parentGrid->IsColumnHovered(m_gridX))
                     m_buttonTexture = renderer->LoadTexture("textures/grid_elem_red_hovered.bmp");
                 else
                     m_buttonTexture = renderer->LoadTexture("textures/grid_elem_red.bmp");
                 renderer->RenderTexture(m_buttonTexture, &m_pos);
             break;
         }
+}
+
+bool PGrid::IsColumnHovered(int column)
+{
+    for(unsigned int i = 0; i < m_gridElements.size(); i++)
+    {
+        if (m_gridElements.at(i).GetGridX() == column && m_gridElements.at(i).isHovered())
+            return true;
+    }
+    return false;
 }

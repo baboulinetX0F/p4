@@ -24,7 +24,7 @@ static const short int PTS_SERIE_DEUX = 1;
 // Niveaux de difficultés
 static const short int DIFFICULTE_FACILE = 2;
 static const short int DIFFICULTE_MOYEN = 3;
-static const short int DIFFICULTE_DIFFICILE = 4;
+static const short int DIFFICULTE_DIFFICILE = 6;
 
 /* GameManager : Gère la logique du jeu */
 class GameManager {
@@ -41,19 +41,24 @@ public:
 	void Update();
 
 	// Place le pion du joueur Si c'est son tour
-	void Jouer(CASE_STATE color, unsigned short int column);	
+    void Jouer(CASE_STATE color, unsigned short int column);
+
+    // Retourne l'état actuel de la partie
+    short int GetGameState() const;
 	
-	void Restart();
+    // Redemarre une nouvelle partie
+    void Restart();
 
 	// Renvoie l'etat dune case
-	CASE_STATE GetGridValAt(short int x, short int y);
+    CASE_STATE GetGridValAt(short int x, short int y);
 
 	/* Retourne le nombre de pièce que contient la colonne passé en paramètre */
 	unsigned short int GetColHeight(unsigned short int column);
 
 	// Gére le tour de l'IA 
 	void IA(unsigned short int difficulty);
-		
+
+    // Gère le tour de l'IA version Coupe Alpha/Beta
 	void IaAB(unsigned short int profondeur);
 
 private:
@@ -77,7 +82,7 @@ private:
 	short int m_gameState = 0;
 
 	// Variable de difficulté de l'IA (à def par les choix joueur)
-	int m_difficulte = DIFFICULTE_MOYEN;
+    int m_difficulte = DIFFICULTE_DIFFICILE;
 
 	/* Initialise la grille de jeu */
 	void InitGrid();
@@ -123,10 +128,10 @@ private:
 	séries de 2 et 3 et dans la 2éme si ya une série de 4 de formé */
 	short int* Eval(short int column);
 
-	// Parcour de l'arbre, recherche du Min
+    // Parcours de l'arbre, recherche du Min
 	short int Min(unsigned short int difficulty, unsigned short int lastPion);
 
-	// Parcour de l'arbre, recherche du Max
+    // Parcours de l'arbre, recherche du Max
 	short int Max(unsigned short int difficulty, unsigned short int lastPion);
 
 	short int MinAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta);

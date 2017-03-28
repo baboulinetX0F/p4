@@ -22,12 +22,19 @@ void Button::SetActionOnClick(void(GameManager::* ptr)(void))
 	m_ptrAction = ptr;
 }
 
+bool Button::isHovered() const
+{
+    return m_hovered;
+}
+
+bool Button::isClicked() const { return m_clicked; }
+
 void Button::Draw(Renderer* renderer)
 {	
 	if (!m_customTexture)
 	{
 		// TODO : Ajout cas OnClicked
-		if (isHovered)
+        if (isHovered())
 			renderer->RenderFillRect(&m_pos,
 				BUTTON_COLOR_HOVERED_DEFAULT.r, BUTTON_COLOR_HOVERED_DEFAULT.g, BUTTON_COLOR_HOVERED_DEFAULT.b);
 		else
@@ -35,9 +42,9 @@ void Button::Draw(Renderer* renderer)
 	}
 	else
 	{
-		if (isClicked)
+		if (m_clicked)
 			renderer->RenderTexture(m_buttonClickedTexture, &m_pos);
-		else if (isHovered)
+        else if (isHovered())
 			renderer->RenderTexture(m_buttonHoveredTexture, &m_pos);
 		else
 			renderer->RenderTexture(m_buttonTexture, &m_pos);
@@ -56,8 +63,8 @@ void Button::Draw(Renderer* renderer)
 
 void Button::HandleEvents(SDL_Event e)
 {
-    if (isClicked)
-        isClicked = false;
+    if (m_clicked)
+        m_clicked = false;
 
     // En cas d'event clic gauche
 	if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
@@ -67,7 +74,7 @@ void Button::HandleEvents(SDL_Event e)
 
         if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH())){
             std::cout << ("Button Clicked\n");
-            isClicked = true;
+            m_clicked = true;
 			OnClick();
         }
 	}
@@ -78,12 +85,12 @@ void Button::HandleEvents(SDL_Event e)
 
         if (x >= GetX() && x <= (GetX() + GetW()) && y >= GetY() && y <= (GetY() + GetH()))
         {
-            if (!isHovered)
-                isHovered = true;
+            if (!isHovered())
+                m_hovered = true;
         }
         else {
-            if (isHovered)
-                isHovered = false;
+            if (isHovered())
+                m_hovered = false;
         }
     }
 }
