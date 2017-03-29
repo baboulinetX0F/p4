@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <iostream>
 
+// MES COUILLES EN SKI
+
 GameManager GameManager::m_instance = GameManager();
 
 GameManager & GameManager::Instance()
