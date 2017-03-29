@@ -113,6 +113,19 @@ short int GameManager::GetColHeight(short int column)
 	return count;
 }
 
+void GameManager::DifficulteUn() {
+	m_difficulte = DIFFICULTE_FACILE;
+}
+void GameManager::DifficulteDeux() {
+	m_difficulte = DIFFICULTE_MOYEN;
+}
+void GameManager::DifficulteTrois() {
+	m_difficulte = DIFFICULTE_DIFFICILE;
+}
+void GameManager::DifficulteQuatre() { // paternes + learning
+	m_difficulte = DIFFICULTE_HARDCORE;
+}
+
 short int GameManager::FinPartie(short int etat) {
 	int nbPion(0);
 	for (int i = 0; i < NUM_COL; i++) {
