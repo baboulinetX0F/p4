@@ -23,8 +23,8 @@ void GameManager::Update()
 {
 	if (m_gameState == 0) {
 		if (!m_playerTurn)
-			IA(m_difficulte);
-			//IaAB(m_difficulte);
+			//IA(m_difficulte);
+			IaAB(m_difficulte);
 	}
 }
 
@@ -263,7 +263,7 @@ void GameManager::IA(short int profondeur)
 			PushPiece(COUL_IA, i);
 			tmp = Min(profondeur - 1, i);
 
-			if ((tmp > max) || ((tmp == max) && (rand() % 2 == 0))) {
+			if ((tmp > max) || ( (tmp == max) && (rand() % 2 == 0) ) ) {
 				max = tmp;
 				maxi = i;
 			}
@@ -342,7 +342,7 @@ void GameManager::ClearGrid()
 
 void GameManager::IaAB(short int profondeur) {
 	short int maxi(-1), alpha(-1000), beta(1000), tmp;
-
+	srand(static_cast<unsigned int>(time(NULL)));
 	for (short int i = 0; i < NUM_COL; i++)
 	{
 		if (GetColHeight(i) < NUM_LINES)
@@ -353,7 +353,7 @@ void GameManager::IaAB(short int profondeur) {
 
 			PullPiece(i);
 
-			if (tmp > alpha) {
+			if ((tmp > alpha) || ( (tmp==alpha) && (rand() % 2 == 0) ) ) {
 				alpha = tmp;
 				maxi = i;
 			}
