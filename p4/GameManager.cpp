@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 
-// MES COUILLES EN SKI
+// MES COUILLES EN SKI test
 
 GameManager GameManager::m_instance = GameManager();
 
