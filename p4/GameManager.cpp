@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <iostream>
 
-// MES COUILLES EN SKI test
 
 GameManager GameManager::m_instance = GameManager();
 
@@ -25,6 +24,7 @@ void GameManager::Update()
 	if (m_gameState == 0) {
 		if (!m_playerTurn)
 			IA(m_difficulte);
+			//IaAB(m_difficulte);
 	}
 }
 
@@ -50,7 +50,7 @@ short int GameManager::CheckWin()
 	return etat;
 }
 
-void GameManager::PushPiece(CASE_STATE color, unsigned short int column)
+void GameManager::PushPiece(CASE_STATE color, short int column)
 {
 	int line = GetColHeight(column);
 
@@ -61,7 +61,7 @@ void GameManager::PushPiece(CASE_STATE color, unsigned short int column)
 }
 
 // TODO : Différencier joueur et IA dans jouer (cf m_playerTurn)
-void GameManager::Jouer(CASE_STATE color, unsigned short int column)
+void GameManager::Jouer(CASE_STATE color, short int column)
 {
 	if (m_gameState == 0) {
 		PushPiece(color, column);
@@ -77,7 +77,7 @@ void GameManager::Restart()
 	m_gameState = 0;
 }
 
-void GameManager::PullPiece(unsigned short int column)
+void GameManager::PullPiece(short int column)
 {
 	int line = GetColHeight(column) - 1;
 	m_grid[column][line] = CASE_STATE::EMPTY;
@@ -85,9 +85,9 @@ void GameManager::PullPiece(unsigned short int column)
 
 void GameManager::InitGrid()
 {
-	for (unsigned short int x = 0; x < NUM_COL; x++)
+	for (short int x = 0; x < NUM_COL; x++)
 	{
-		for (unsigned short int y = 0; y < NUM_LINES; y++)
+		for (short int y = 0; y < NUM_LINES; y++)
 		{
 			m_grid[x][y] = CASE_STATE::EMPTY;
 			cpy_grid[x][y] = CASE_STATE::EMPTY;
@@ -102,10 +102,10 @@ CASE_STATE GameManager::GetGridValAt(short int x, short int y)
 	return m_grid[x][y];
 }
 
-unsigned short int GameManager::GetColHeight(unsigned short int column)
+short int GameManager::GetColHeight(short int column)
 {
-	int count = 0;
-	for (int y = 0; y < NUM_LINES; y++)
+	short int count = 0;
+	for (short int y = 0; y < NUM_LINES; y++)
 	{
 		if (m_grid[column][y] != CASE_STATE::EMPTY)
 			count++;
@@ -113,7 +113,7 @@ unsigned short int GameManager::GetColHeight(unsigned short int column)
 	return count;
 }
 
-short int GameManager::FinPartie(unsigned short int etat) {
+short int GameManager::FinPartie(short int etat) {
 	int nbPion(0);
 	for (int i = 0; i < NUM_COL; i++) {
 		nbPion += GetColHeight(i);
@@ -125,7 +125,7 @@ short int GameManager::FinPartie(unsigned short int etat) {
 	}
 }
 
-unsigned short int GameManager::CheckEtat(short int serieDeQuatre, short int column) {
+short int GameManager::CheckEtat(short int serieDeQuatre, short int column) {
 	CASE_STATE couleur = m_grid[column][GetColHeight(column) - 1];
 	if (serieDeQuatre && (couleur == COUL_IA))
 		return 1; // IA gagne 
@@ -140,7 +140,7 @@ unsigned short int GameManager::CheckEtat(short int serieDeQuatre, short int col
 	}
 }
 
-void GameManager::FillTabEval(short int* tab, unsigned short int typeSerie) {
+void GameManager::FillTabEval(short int* tab, short int typeSerie) {
 	switch (typeSerie) {
 	case 1: /* Rien */ break;
 	case 2: tab[0] += PTS_SERIE_DEUX; break;
@@ -149,9 +149,9 @@ void GameManager::FillTabEval(short int* tab, unsigned short int typeSerie) {
 	}
 }
 
-unsigned short int GameManager::Horizontale(short int x, short int y, CASE_STATE c) {
+short int GameManager::Horizontale(short int x, short int y, CASE_STATE c) {
 	short int  i(1), j(1);
-	unsigned short int size(1);
+	short int size(1);
 
 	while ((x - i >= 0) && (m_grid[x - i][y] == c)) { size++; i++; } //vers la gauche 
 	while ((x + j < 7) && (m_grid[x + j][y] == c)) { size++; j++; } //vers la droite
@@ -169,9 +169,9 @@ unsigned short int GameManager::Horizontale(short int x, short int y, CASE_STATE
 	return size;
 }
 
-unsigned short int GameManager::Verticale(short int x, short int y, CASE_STATE c) {
+short int GameManager::Verticale(short int x, short int y, CASE_STATE c) {
 	short int i(1);
-	unsigned short int size(1);
+	short int size(1);
 
 	while ((y - i >= 0) && (m_grid[x][y - i] == c)) { size++; i++; } //vers le bas  
 																	 // chaines mortes
@@ -179,9 +179,9 @@ unsigned short int GameManager::Verticale(short int x, short int y, CASE_STATE c
 	return size;
 }
 
-unsigned short int GameManager::DiagonaleD(short int x, short int y, CASE_STATE c) {
+short int GameManager::DiagonaleD(short int x, short int y, CASE_STATE c) {
 	short int  i(1), j(1);
-	unsigned short int size(1);
+	short int size(1);
 
 
 	while ((x - i >= 0) && (y + i < 6) && (m_grid[x - i][y + i] == c)) { size++; i++; } //vers le Haut Gauche 
@@ -205,9 +205,9 @@ unsigned short int GameManager::DiagonaleD(short int x, short int y, CASE_STATE 
 	return size;
 }
 
-unsigned short int GameManager::DiagonaleM(short int x, short int y, CASE_STATE c) {
+short int GameManager::DiagonaleM(short int x, short int y, CASE_STATE c) {
 	short int  i(1), j(1);
-	unsigned short int size(1);
+	short int size(1);
 
 	while ((x + i < 7) && (y + i < 6) && (m_grid[x + i][y + i] == c)) { size++; i++; } //vers le Haut Droit 
 	while ((x - j >= 0) && (y - j >= 0) && (m_grid[x - j][y - j] == c)) { size++; j++; } //vers le Bas Gauche 
@@ -252,11 +252,11 @@ short int* GameManager::Eval(short int column) {
 	return tabEval;
 }
 
-void GameManager::IA(unsigned short int profondeur)
+void GameManager::IA(short int profondeur)
 {
 	short int max(-1000), tmp, maxi;
 	srand(static_cast<unsigned int>(time(NULL)));
-	for (unsigned short int i = 0; i < NUM_COL; i++)
+	for (short int i = 0; i < NUM_COL; i++)
 	{
 		if (GetColHeight(i) < NUM_LINES)
 		{
@@ -273,13 +273,13 @@ void GameManager::IA(unsigned short int profondeur)
 	Jouer(COUL_IA, maxi);
 }
 
-short int GameManager::Min(unsigned short int profondeur, unsigned short int lastPion)
+short int GameManager::Min(short int profondeur, short int lastPion)
 {
 	short int *tabEval = Eval(lastPion);
 	short int serieDeQuatre = tabEval[1];
 	short int poids = tabEval[0];
 	delete[] tabEval;
-	unsigned short int etat = CheckEtat(serieDeQuatre, lastPion);
+	short int etat = CheckEtat(serieDeQuatre, lastPion);
 	if (etat != 0) {
 		return FinPartie(etat);
 	}
@@ -301,13 +301,13 @@ short int GameManager::Min(unsigned short int profondeur, unsigned short int las
 	}
 }
 
-short int GameManager::Max(unsigned short int profondeur, unsigned short int lastPion)
+short int GameManager::Max(short int profondeur, short int lastPion)
 {
 	short int *tabEval = Eval(lastPion);
 	short int serieDeQuatre = tabEval[1];
 	short int poids = tabEval[0];
 	delete[] tabEval;
-	unsigned short int etat = CheckEtat(serieDeQuatre, lastPion);
+	short int etat = CheckEtat(serieDeQuatre, lastPion);
 	if (etat != 0) {
 		return FinPartie(etat);
 	}
@@ -330,10 +330,20 @@ short int GameManager::Max(unsigned short int profondeur, unsigned short int las
 
 }
 
-void GameManager::IaAB(unsigned short int profondeur) {
-	short int maxi, alpha(-1000), beta(1000), tmp;
+void GameManager::ClearGrid()
+{
+	for (int x = 0; x < NUM_COL; x++) {
+		for (int y = 0; y < NUM_LINES; y++) {
+			m_grid[x][y] = EMPTY;
+			cpy_grid[x][y] = m_grid[x][y];
+		}
+	}
+}
 
-	for (unsigned short int i = 0; i < NUM_COL; i++)
+void GameManager::IaAB(short int profondeur) {
+	short int maxi(-1), alpha(-1000), beta(1000), tmp;
+
+	for (short int i = 0; i < NUM_COL; i++)
 	{
 		if (GetColHeight(i) < NUM_LINES)
 		{
@@ -349,26 +359,16 @@ void GameManager::IaAB(unsigned short int profondeur) {
 			}
 		}
 	}
-	PushPiece(COUL_IA, maxi);
+	Jouer(COUL_IA, maxi);
 }
 
-void GameManager::ClearGrid()
+short int GameManager::MinAB(short int profondeur, short int lastPion, short int alpha, short int beta) 
 {
-	for (int x = 0; x < NUM_COL; x++) {
-		for (int y = 0; y < NUM_LINES; y++) {
-			m_grid[x][y] = EMPTY;
-			cpy_grid[x][y] = m_grid[x][y];
-		}
-	}
-}
-
-short int GameManager::MinAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta) {
-
 	short int *tabEval = Eval(lastPion);
 	short int serieDeQuatre = tabEval[1], poids = tabEval[0];
 	delete[] tabEval;
 
-	unsigned short int etat = CheckEtat(serieDeQuatre, lastPion);
+	short int etat = CheckEtat(serieDeQuatre, lastPion);
 
 	if (etat != 0) {
 		return FinPartie(etat);
@@ -378,7 +378,7 @@ short int GameManager::MinAB(unsigned short int profondeur, unsigned short int l
 	}
 	else {
 		short int tmp;
-		for (unsigned short int i = 0; i < NUM_COL; i++)
+		for (short int i = 0; i < NUM_COL; i++)
 		{
 			if (GetColHeight(i) < NUM_LINES)
 			{
@@ -392,7 +392,7 @@ short int GameManager::MinAB(unsigned short int profondeur, unsigned short int l
 					beta = tmp;
 				}
 				if ((beta + poids) <= alpha) {
-					return alpha;
+					break;
 				}
 
 			}
@@ -401,13 +401,13 @@ short int GameManager::MinAB(unsigned short int profondeur, unsigned short int l
 	}
 }
 
-short int GameManager::MaxAB(unsigned short int profondeur, unsigned short int lastPion, short int alpha, short int beta)
+short int GameManager::MaxAB(short int profondeur, short int lastPion, short int alpha, short int beta)
 {
 	short int *tabEval = Eval(lastPion);
 	short int serieDeQuatre = tabEval[1], poids = tabEval[0];
 	delete[] tabEval;
 
-	unsigned short int etat = CheckEtat(serieDeQuatre, lastPion);
+	short int etat = CheckEtat(serieDeQuatre, lastPion);
 
 	if (etat != 0) {
 		return FinPartie(etat);
@@ -417,7 +417,7 @@ short int GameManager::MaxAB(unsigned short int profondeur, unsigned short int l
 	}
 	else {
 		short int tmp;
-		for (unsigned short int i = 0; i < NUM_COL; i++)
+		for (short int i = 0; i < NUM_COL; i++)
 		{
 			if (GetColHeight(i) < NUM_LINES)
 			{
@@ -431,7 +431,7 @@ short int GameManager::MaxAB(unsigned short int profondeur, unsigned short int l
 					alpha = tmp;
 				}
 				if ((alpha + poids) >= beta) {
-					return beta;
+					break;
 				}
 
 			}
