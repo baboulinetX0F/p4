@@ -50,23 +50,27 @@ short int GameManager::CheckWin()
 	return etat;
 }
 
-void GameManager::PushPiece(CASE_STATE color, short int column)
+bool GameManager::PushPiece(CASE_STATE color, short int column)
 {
 	int line = GetColHeight(column);
 
 	if (line < NUM_LINES)
 	{
 		m_grid[column][line] = color;
+		return true;
 	}
+	return false;
 }
 
 // TODO : Différencier joueur et IA dans jouer (cf m_playerTurn)
 void GameManager::Jouer(CASE_STATE color, short int column)
 {
 	if (m_gameState == 0) {
-		PushPiece(color, column);
-		m_playerTurn = !m_playerTurn;
-		m_gameState = CheckWin();
+		if (PushPiece(color, column)) {
+			m_playerTurn = !m_playerTurn;
+			m_gameState = CheckWin();
+		}
+		
 	}
 }
 
@@ -265,84 +269,6 @@ short int* GameManager::Eval(short int column) {
 	return tabEval;
 }
 
-void GameManager::IA(short int profondeur)
-{
-	short int max(-1000), tmp, maxi;
-	srand(static_cast<unsigned int>(time(NULL)));
-	for (short int i = 0; i < NUM_COL; i++)
-	{
-		if (GetColHeight(i) < NUM_LINES)
-		{
-			PushPiece(COUL_IA, i);
-			tmp = Min(profondeur - 1, i);
-
-			if ((tmp > max) || ( (tmp == max) && (rand() % 2 == 0) ) ) {
-				max = tmp;
-				maxi = i;
-			}
-			PullPiece(i);
-		}
-	}
-	Jouer(COUL_IA, maxi);
-}
-
-short int GameManager::Min(short int profondeur, short int lastPion)
-{
-	short int *tabEval = Eval(lastPion);
-	short int serieDeQuatre = tabEval[1];
-	short int poids = tabEval[0];
-	delete[] tabEval;
-	short int etat = CheckEtat(serieDeQuatre, lastPion);
-	if (etat != 0) {
-		return FinPartie(etat);
-	}
-	else if (profondeur == 0) {
-		return poids;
-	}
-	else {
-		int min(1000), tmp;
-		for (int i = 0; i < NUM_COL; i++) {
-			if (GetColHeight(i) < NUM_LINES) {
-				PushPiece(COUL_JOUEUR, i);
-				tmp = Max(profondeur - 1, i);
-				if ((tmp < min) || ((tmp == min) && (rand() % 2 == 0)))
-					min = tmp;
-				PullPiece(i);
-			}
-		}
-		return min + poids;
-	}
-}
-
-short int GameManager::Max(short int profondeur, short int lastPion)
-{
-	short int *tabEval = Eval(lastPion);
-	short int serieDeQuatre = tabEval[1];
-	short int poids = tabEval[0];
-	delete[] tabEval;
-	short int etat = CheckEtat(serieDeQuatre, lastPion);
-	if (etat != 0) {
-		return FinPartie(etat);
-	}
-	else if (profondeur == 0) {
-		return poids;
-	}
-	else {
-		int max(-1000), tmp;
-		for (int i = 0; i < NUM_COL; i++) {
-			if (GetColHeight(i) < NUM_LINES) {
-				PushPiece(COUL_IA, i);
-				tmp = Min(profondeur - 1, i);
-				if ((tmp > max) || ((tmp == max) && (rand() % 2 == 0)))
-					max = tmp;
-				PullPiece(i);
-			}
-		}
-		return max + poids;
-	}
-
-}
-
 void GameManager::ClearGrid()
 {
 	for (int x = 0; x < NUM_COL; x++) {
@@ -452,3 +378,83 @@ short int GameManager::MaxAB(short int profondeur, short int lastPion, short int
 		return alpha + poids;
 	}
 }
+
+/*
+void GameManager::IA(short int profondeur)
+{
+	short int max(-1000), tmp, maxi;
+	srand(static_cast<unsigned int>(time(NULL)));
+	for (short int i = 0; i < NUM_COL; i++)
+	{
+		if (GetColHeight(i) < NUM_LINES)
+		{
+			PushPiece(COUL_IA, i);
+			tmp = Min(profondeur - 1, i);
+
+			if ((tmp > max) || ((tmp == max) && (rand() % 2 == 0))) {
+				max = tmp;
+				maxi = i;
+			}
+			PullPiece(i);
+		}
+	}
+	Jouer(COUL_IA, maxi);
+}
+
+short int GameManager::Min(short int profondeur, short int lastPion)
+{
+	short int *tabEval = Eval(lastPion);
+	short int serieDeQuatre = tabEval[1];
+	short int poids = tabEval[0];
+	delete[] tabEval;
+	short int etat = CheckEtat(serieDeQuatre, lastPion);
+	if (etat != 0) {
+		return FinPartie(etat);
+	}
+	else if (profondeur == 0) {
+		return poids;
+	}
+	else {
+		int min(1000), tmp;
+		for (int i = 0; i < NUM_COL; i++) {
+			if (GetColHeight(i) < NUM_LINES) {
+				PushPiece(COUL_JOUEUR, i);
+				tmp = Max(profondeur - 1, i);
+				if ((tmp < min) || ((tmp == min) && (rand() % 2 == 0)))
+					min = tmp;
+				PullPiece(i);
+			}
+		}
+		return min + poids;
+	}
+}
+
+short int GameManager::Max(short int profondeur, short int lastPion)
+{
+	short int *tabEval = Eval(lastPion);
+	short int serieDeQuatre = tabEval[1];
+	short int poids = tabEval[0];
+	delete[] tabEval;
+	short int etat = CheckEtat(serieDeQuatre, lastPion);
+	if (etat != 0) {
+		return FinPartie(etat);
+	}
+	else if (profondeur == 0) {
+		return poids;
+	}
+	else {
+		int max(-1000), tmp;
+		for (int i = 0; i < NUM_COL; i++) {
+			if (GetColHeight(i) < NUM_LINES) {
+				PushPiece(COUL_IA, i);
+				tmp = Min(profondeur - 1, i);
+				if ((tmp > max) || ((tmp == max) && (rand() % 2 == 0)))
+					max = tmp;
+				PullPiece(i);
+			}
+		}
+		return max + poids;
+	}
+
+}
+*/

@@ -57,7 +57,7 @@ public:
 	short int GetColHeight(short int column);
 
 	// Gére le tour de l'IA 
-	void IA(short int difficulty);
+	//void IA(short int difficulty);
 
 	// Gère le tour de l'IA version Coupe Alpha/Beta
 	void IaAB(short int profondeur);
@@ -114,7 +114,7 @@ private:
 	void FillTabEval(short int *tab, short int typeSerie);
 
 	// Insert une piece de couleur (color) à la colonne (column)
-	void PushPiece(CASE_STATE color, short int column);
+	bool PushPiece(CASE_STATE color, short int column);
 
 	// Retire une piece de la colonne (column)
 	void PullPiece(short int column);
@@ -135,10 +135,10 @@ private:
 	short int* Eval(short int column);
 
 	// Parcours de l'arbre, recherche du Min
-	short int Min(short int difficulty, short int lastPion);
+	//short int Min(short int difficulty, short int lastPion);
 
 	// Parcours de l'arbre, recherche du Max
-	short int Max(short int difficulty, short int lastPion);
+	//short int Max(short int difficulty, short int lastPion);
 
 
 	short int MinAB(short int profondeur, short int lastPion, short int alpha, short int beta);
