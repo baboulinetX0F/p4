@@ -21,7 +21,6 @@ void PGrid::Draw(Renderer * renderer)
     contourRect.y -= 3;
     contourRect.w += 6;
     contourRect.h += 6;
-	test
 
     if (m_gameManager->GetGameState() == 2)
     {
