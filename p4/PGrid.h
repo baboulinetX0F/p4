@@ -55,7 +55,7 @@ private:
     std::vector<Element> m_gridElements;
     GameManager* m_gameManager = nullptr;
 
-    void InitGrid();
+	void InitGrid();
 
     // Test un element de la colonne donnée est traversé par le curseur
     bool IsColumnHovered(int column);

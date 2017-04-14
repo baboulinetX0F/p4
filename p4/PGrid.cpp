@@ -22,20 +22,36 @@ void PGrid::Draw(Renderer * renderer)
     contourRect.w += 6;
     contourRect.h += 6;
 
-    if (m_gameManager->GetGameState() == 2)
-    {
-        renderer->RenderTexture(renderer->LoadTexture("textures/victoire.bmp"), &contourRect);
-    }
-    else if (m_gameManager->GetGameState() == 1)
-        renderer->RenderTexture(renderer->LoadTexture("textures/defeat.bmp"), &contourRect);
-    else
-    {
-        // Affichage fond de la grille
-        renderer->RenderFillRect(&contourRect, 255, 255, 255);
+	// Affichage fond de la grille	
+	
+	if (m_gameManager->GetGameState() == 2)
+		renderer->RenderFillRect(&contourRect, 0, 255, 0);
+	else if (m_gameManager->GetGameState() == 1)
+		renderer->RenderFillRect(&contourRect, 255, 0, 0);
+	else
+		renderer->RenderFillRect(&contourRect, 255, 255, 255);
+   
 
-        // Affichage les cases
-        for (unsigned int i = 0; i < m_gridElements.size(); i++)
-            m_gridElements.at(i).Draw(renderer);
+    // Affichage les cases
+    for (unsigned int i = 0; i < m_gridElements.size(); i++)
+        m_gridElements.at(i).Draw(renderer);
+
+    if (m_gameManager->GetGameState() > 0) {
+        SDL_Rect textRect = m_pos;
+        textRect.x = textRect.x + (textRect.w / 2);
+        textRect.y = textRect.y + (textRect.h / 2);
+        TTF_SizeText(renderer->GetDefaultFont(),"Victoire",&textRect.w, &textRect.h);
+        textRect.x -= (textRect.w / 2);
+        textRect.y -= (textRect.h / 2);
+
+        if (m_gameManager->GetGameState() == 2)
+        {
+            renderer->RenderTexture(renderer->RenderText("Victoire", renderer->GetDefaultFont()), &textRect);
+        }
+        else if (m_gameManager->GetGameState() == 1)
+        {
+            renderer->RenderTexture(renderer->RenderText("Defaite", renderer->GetDefaultFont()), &textRect);
+        }
     }
 }
 

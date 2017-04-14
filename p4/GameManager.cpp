@@ -75,6 +75,11 @@ void GameManager::Restart()
 	m_gameState = 0;
 }
 
+void GameManager::Save()
+{
+
+}
+
 void GameManager::PullPiece(unsigned short int column)
 {
 	int line = GetColHeight(column) - 1;

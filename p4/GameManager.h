@@ -23,7 +23,7 @@ static const short int PTS_SERIE_DEUX = 1;
 
 // Niveaux de difficultés
 static const short int DIFFICULTE_FACILE = 2;
-static const short int DIFFICULTE_MOYEN = 3;
+static const short int DIFFICULTE_MOYEN = 4;
 static const short int DIFFICULTE_DIFFICILE = 6;
 
 /* GameManager : Gère la logique du jeu */
@@ -61,6 +61,8 @@ public:
     // Gère le tour de l'IA version Coupe Alpha/Beta
 	void IaAB(unsigned short int profondeur);
 
+    void Save();
+
 private:
 	// Differents operations sur reference
 	GameManager& operator= (const GameManager&) {}
@@ -82,7 +84,7 @@ private:
 	short int m_gameState = 0;
 
 	// Variable de difficulté de l'IA (à def par les choix joueur)
-    int m_difficulte = DIFFICULTE_DIFFICILE;
+    int m_difficulte = DIFFICULTE_FACILE;
 
 	/* Initialise la grille de jeu */
 	void InitGrid();
