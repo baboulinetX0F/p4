@@ -17,7 +17,7 @@ static const CASE_STATE COUL_JOUEUR = YELLOW;
 static const CASE_STATE COUL_IA = RED;
 
 /* Valeurs des séries, pondération */
-static const short int PTS_VICTOIRE = 100;
+static const short int PTS_VICTOIRE = 1000;
 static const short int PTS_SERIE_TROIS = 10;
 static const short int PTS_SERIE_DEUX = 1;
 
@@ -37,6 +37,14 @@ public:
 	
 	// Booléen pour savoir si c'est le tour du joueur (et gérer le tour IA par conséquent)
 	bool m_playerTurn = true;
+
+	short int suiteDeCoup[43];
+
+	void FillSuiteDeCoup(short int col);
+
+	void Sauvegarder();
+
+	void Load();
 
 	// En fonction de l'état du jeu fait jouer l'IA (si la partie continue)
 	void Update();

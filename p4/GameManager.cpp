@@ -2,7 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
-
+#include <fstream>
 
 GameManager GameManager::m_instance = GameManager();
 
@@ -67,10 +67,50 @@ void GameManager::Jouer(CASE_STATE color, short int column)
 {
 	if (m_gameState == 0) {
 		if (PushPiece(color, column)) {
+			FillSuiteDeCoup(column);
 			m_playerTurn = !m_playerTurn;
 			m_gameState = CheckWin();
 		}
 		
+	}
+}
+
+void GameManager::FillSuiteDeCoup(short int col) {
+	short int i = 0;
+	while (suiteDeCoup[i] != 9) {
+		i++;
+	}
+	suiteDeCoup[i] = col;
+}
+
+void GameManager::Sauvegarder() {
+	std::ofstream ecr("save.txt");
+	for (short int i = 0; i < 43; i++) {
+		ecr << suiteDeCoup[i];
+	}
+}
+
+void GameManager::Load() {
+	std::ifstream lect("save.txt");
+	char coup;
+	short int i = 0;
+	while (lect.get(coup)) {
+		suiteDeCoup[i] = coup - 48;
+		i++;
+	}
+	i = 0;
+	bool j = true;
+	while (suiteDeCoup[i] != 9) {
+		if (j) {
+			PushPiece(COUL_JOUEUR, suiteDeCoup[i]);
+			j = false;
+			i++;
+		}
+		else if (!j) {
+			PushPiece(COUL_IA, suiteDeCoup[i]);
+			j = true;
+			i++;
+		}
 	}
 }
 
@@ -96,6 +136,9 @@ void GameManager::InitGrid()
 			m_grid[x][y] = CASE_STATE::EMPTY;
 			cpy_grid[x][y] = CASE_STATE::EMPTY;
 		}
+	}
+	for (short int i = 0; i < 43; i++) {
+		suiteDeCoup[i] = 9;
 	}
 }
 
@@ -136,8 +179,8 @@ short int GameManager::FinPartie(short int etat) {
 		nbPion += GetColHeight(i);
 	}
 	switch (etat) {
-	case 1: return PTS_VICTOIRE - nbPion; break; // Victoire IA
-	case 2: return (-1 * PTS_VICTOIRE) + nbPion; break; // Victoire joueur
+	case 1: return PTS_VICTOIRE - (nbPion*10); break; // Victoire IA
+	case 2: return (-1 * PTS_VICTOIRE) + (nbPion*10); break; // Victoire joueur
 	default: return 0; break; // Grille pleine sans gagnant
 	}
 }
@@ -162,7 +205,7 @@ void GameManager::FillTabEval(short int* tab, short int typeSerie) {
 	case 1: /* Rien */ break;
 	case 2: tab[0] += PTS_SERIE_DEUX; break;
 	case 3: tab[0] += PTS_SERIE_TROIS; break;
-	default:tab[1] += 1; break;
+	case 4: tab[1] += 1; break;
 	}
 }
 
@@ -280,7 +323,7 @@ void GameManager::ClearGrid()
 }
 
 void GameManager::IaAB(short int profondeur) {
-	short int maxi(-1), alpha(-1000), beta(1000), tmp;
+	short int maxi(-1), alpha(-10000), beta(10000), tmp;
 	srand(static_cast<unsigned int>(time(NULL)));
 	for (short int i = 0; i < NUM_COL; i++)
 	{
@@ -291,6 +334,8 @@ void GameManager::IaAB(short int profondeur) {
 			tmp = MinAB(profondeur - 1, i, alpha, beta);
 
 			PullPiece(i);
+
+			std::cout << tmp << std::endl;
 
 			if ((tmp > alpha) || ( (tmp==alpha) && (rand() % 2 == 0) ) ) {
 				alpha = tmp;
@@ -306,6 +351,7 @@ short int GameManager::MinAB(short int profondeur, short int lastPion, short int
 	short int *tabEval = Eval(lastPion);
 	short int serieDeQuatre = tabEval[1], poids = tabEval[0];
 	delete[] tabEval;
+	
 
 	short int etat = CheckEtat(serieDeQuatre, lastPion);
 

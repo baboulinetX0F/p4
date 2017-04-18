@@ -82,6 +82,20 @@ void Game::UISetup()
 	Diff4->SetActionOnClick(&GameManager::DifficulteQuatre);
 	m_ui.push_back(Diff4);
 
+	Button* save = new Button();
+	save->SetPos(1280 - 180, 390);
+	save->SetSize(180, 60);
+	save->SetText("Sauvegarder");
+	save->SetActionOnClick(&GameManager::Sauvegarder);
+	m_ui.push_back(save);
+
+	Button* load = new Button();
+	load->SetPos(1280 - 180, 465);
+	load->SetSize(180, 60);
+	load->SetText("Charger");
+	load->SetActionOnClick(&GameManager::Load);
+	m_ui.push_back(load);
+
 	PGrid* grid = new PGrid(m_manager);
 	grid->SetPos(300,50);
 	m_ui.push_back(grid);
