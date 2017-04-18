@@ -38,7 +38,7 @@ public:
 	// Booléen pour savoir si c'est le tour du joueur (et gérer le tour IA par conséquent)
 	bool m_playerTurn = true;
 
-	short int suiteDeCoup[43];
+	short int suiteDeCoup[44];
 
 	void FillSuiteDeCoup(short int col);
 

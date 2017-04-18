@@ -76,7 +76,7 @@ void GameManager::Jouer(CASE_STATE color, short int column)
 }
 
 void GameManager::FillSuiteDeCoup(short int col) {
-	short int i = 0;
+	short int i = 1;
 	while (suiteDeCoup[i] != 9) {
 		i++;
 	}
@@ -85,7 +85,8 @@ void GameManager::FillSuiteDeCoup(short int col) {
 
 void GameManager::Sauvegarder() {
 	std::ofstream ecr("save.txt");
-	for (short int i = 0; i < 43; i++) {
+	ecr << m_difficulte;
+	for (short int i = 1; i < 44; i++) {
 		ecr << suiteDeCoup[i];
 	}
 }
@@ -98,7 +99,7 @@ void GameManager::Load() {
 		suiteDeCoup[i] = coup - 48;
 		i++;
 	}
-	i = 0;
+	i = 1;
 	bool j = true;
 	while (suiteDeCoup[i] != 9) {
 		if (j) {
@@ -112,6 +113,7 @@ void GameManager::Load() {
 			i++;
 		}
 	}
+	m_difficulte = suiteDeCoup[0];
 }
 
 void GameManager::Restart()
