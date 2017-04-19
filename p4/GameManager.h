@@ -38,12 +38,16 @@ public:
 	// Booléen pour savoir si c'est le tour du joueur (et gérer le tour IA par conséquent)
 	bool m_playerTurn = true;
 
+	// Tab qui sauvegarde chaque coup joué (les num de col) dans la partie
 	short int suiteDeCoup[44];
 
+	// remplie le tab suiteDeCoup
 	void FillSuiteDeCoup(short int col);
 
+	// Sauvegarde une partie
 	void Sauvegarder();
 
+	//Charge une parite sauvegardé
 	void Load();
 
 	// En fonction de l'état du jeu fait jouer l'IA (si la partie continue)
@@ -70,6 +74,8 @@ public:
 	// Gère le tour de l'IA version Coupe Alpha/Beta
 	void IaAB(short int profondeur);
 
+
+	// Change la difficulté
 	void DifficulteUn();
 	void DifficulteDeux();
 	void DifficulteTrois();
@@ -100,9 +106,6 @@ private:
 
 	/* Initialise la grille de jeu */
 	void InitGrid();
-
-	// Vide les grilles (temporaire et principale)
-	void ClearGrid();
 
 	// Compare la grille de jeu et la copie et renvoie la premiére colonne différente trouvé
 	short int CompareGrid();
@@ -142,15 +145,15 @@ private:
 	séries de 2 et 3 et dans la 2éme si ya une série de 4 de formé */
 	short int* Eval(short int column);
 
+	short int MinAB(short int profondeur, short int lastPion, short int alpha, short int beta);
+
+	short int MaxAB(short int profondeur, short int lastPion, short int alpha, short int beta);
+
 	// Parcours de l'arbre, recherche du Min
 	//short int Min(short int difficulty, short int lastPion);
 
 	// Parcours de l'arbre, recherche du Max
 	//short int Max(short int difficulty, short int lastPion);
 
-
-	short int MinAB(short int profondeur, short int lastPion, short int alpha, short int beta);
-
-	short int MaxAB(short int profondeur, short int lastPion, short int alpha, short int beta);
 };
 

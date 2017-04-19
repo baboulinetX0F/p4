@@ -19,68 +19,23 @@ GameManager::~GameManager()
 {
 }
 
-void GameManager::Update()
+/* FONCTIONS BOUTTON */
+
+void GameManager::DifficulteUn() 
 {
-	if (m_gameState == 0) {
-		if (!m_playerTurn)
-			//IA(m_difficulte);
-			IaAB(m_difficulte);
-	}
+	m_difficulte = DIFFICULTE_FACILE;
 }
-
-short int GameManager::CompareGrid() {
-	for (int x = 0; x < NUM_COL; x++) {
-		for (int y = 0; y < NUM_LINES; y++) {
-			if (m_grid[x][y] != cpy_grid[x][y]) {
-				cpy_grid[x][y] = m_grid[x][y];
-				return x;
-			}
-		}
-	}
-	return 0;
-}
-
-short int GameManager::CheckWin()
+void GameManager::DifficulteDeux() 
 {
-	short int colDiff = CompareGrid(), etat;
-	short int *tabEval = Eval(colDiff);
-	short int serieDeQuatre = tabEval[1];
-	delete[] tabEval;
-	etat = CheckEtat(serieDeQuatre, colDiff);
-	return etat;
+	m_difficulte = DIFFICULTE_MOYEN;
 }
-
-bool GameManager::PushPiece(CASE_STATE color, short int column)
+void GameManager::DifficulteTrois() 
 {
-	int line = GetColHeight(column);
-
-	if (line < NUM_LINES)
-	{
-		m_grid[column][line] = color;
-		return true;
-	}
-	return false;
+	m_difficulte = DIFFICULTE_DIFFICILE;
 }
-
-// TODO : Différencier joueur et IA dans jouer (cf m_playerTurn)
-void GameManager::Jouer(CASE_STATE color, short int column)
-{
-	if (m_gameState == 0) {
-		if (PushPiece(color, column)) {
-			FillSuiteDeCoup(column);
-			m_playerTurn = !m_playerTurn;
-			m_gameState = CheckWin();
-		}
-		
-	}
-}
-
-void GameManager::FillSuiteDeCoup(short int col) {
-	short int i = 1;
-	while (suiteDeCoup[i] != 9) {
-		i++;
-	}
-	suiteDeCoup[i] = col;
+void GameManager::DifficulteQuatre() 
+{ // paternes + learning
+	m_difficulte = DIFFICULTE_HARDCORE;
 }
 
 void GameManager::Sauvegarder() {
@@ -118,16 +73,14 @@ void GameManager::Load() {
 
 void GameManager::Restart()
 {
-	ClearGrid();
+	InitGrid();
 	m_playerTurn = true;
 	m_gameState = 0;
 }
 
-void GameManager::PullPiece(short int column)
-{
-	int line = GetColHeight(column) - 1;
-	m_grid[column][line] = CASE_STATE::EMPTY;
-}
+/* FONCTION GENERALES / IHM */
+
+short int GameManager::GetGameState() const { return m_gameState; }
 
 void GameManager::InitGrid()
 {
@@ -144,11 +97,12 @@ void GameManager::InitGrid()
 	}
 }
 
-short int GameManager::GetGameState() const { return m_gameState; }
-
-CASE_STATE GameManager::GetGridValAt(short int x, short int y)
+void GameManager::Update()
 {
-	return m_grid[x][y];
+	if (m_gameState == 0) {
+		if (!m_playerTurn)
+			IaAB(m_difficulte);
+	}
 }
 
 short int GameManager::GetColHeight(short int column)
@@ -162,29 +116,26 @@ short int GameManager::GetColHeight(short int column)
 	return count;
 }
 
-void GameManager::DifficulteUn() {
-	m_difficulte = DIFFICULTE_FACILE;
-}
-void GameManager::DifficulteDeux() {
-	m_difficulte = DIFFICULTE_MOYEN;
-}
-void GameManager::DifficulteTrois() {
-	m_difficulte = DIFFICULTE_DIFFICILE;
-}
-void GameManager::DifficulteQuatre() { // paternes + learning
-	m_difficulte = DIFFICULTE_HARDCORE;
+short int GameManager::CheckWin()
+{
+	short int colDiff = CompareGrid(), etat;
+	short int *tabEval = Eval(colDiff);
+	short int serieDeQuatre = tabEval[1];
+	delete[] tabEval;
+	etat = CheckEtat(serieDeQuatre, colDiff);
+	return etat;
 }
 
-short int GameManager::FinPartie(short int etat) {
-	int nbPion(0);
-	for (int i = 0; i < NUM_COL; i++) {
-		nbPion += GetColHeight(i);
+short int GameManager::CompareGrid() {
+	for (int x = 0; x < NUM_COL; x++) {
+		for (int y = 0; y < NUM_LINES; y++) {
+			if (m_grid[x][y] != cpy_grid[x][y]) {
+				cpy_grid[x][y] = m_grid[x][y];
+				return x;
+			}
+		}
 	}
-	switch (etat) {
-	case 1: return PTS_VICTOIRE - (nbPion*10); break; // Victoire IA
-	case 2: return (-1 * PTS_VICTOIRE) + (nbPion*10); break; // Victoire joueur
-	default: return 0; break; // Grille pleine sans gagnant
-	}
+	return 0;
 }
 
 short int GameManager::CheckEtat(short int serieDeQuatre, short int column) {
@@ -202,12 +153,60 @@ short int GameManager::CheckEtat(short int serieDeQuatre, short int column) {
 	}
 }
 
-void GameManager::FillTabEval(short int* tab, short int typeSerie) {
-	switch (typeSerie) {
-	case 1: /* Rien */ break;
-	case 2: tab[0] += PTS_SERIE_DEUX; break;
-	case 3: tab[0] += PTS_SERIE_TROIS; break;
-	case 4: tab[1] += 1; break;
+void GameManager::Jouer(CASE_STATE color, short int column)
+{
+	if (m_gameState == 0) {
+		if (PushPiece(color, column)) {
+			FillSuiteDeCoup(column);
+			m_playerTurn = !m_playerTurn;
+			m_gameState = CheckWin();
+		}
+
+	}
+}
+
+bool GameManager::PushPiece(CASE_STATE color, short int column)
+{
+	int line = GetColHeight(column);
+
+	if (line < NUM_LINES)
+	{
+		m_grid[column][line] = color;
+		return true;
+	}
+	return false;
+}
+
+void GameManager::PullPiece(short int column)
+{
+	int line = GetColHeight(column) - 1;
+	m_grid[column][line] = CASE_STATE::EMPTY;
+}
+
+void GameManager::FillSuiteDeCoup(short int col) {
+	short int i = 1;
+	while (suiteDeCoup[i] != 9) {
+		i++;
+	}
+	suiteDeCoup[i] = col;
+}
+
+CASE_STATE GameManager::GetGridValAt(short int x, short int y)
+{
+	return m_grid[x][y];
+}
+
+/* FONCTIONS ARBRE DE RECHERHCER DU MEILLEUR COUP */
+
+short int GameManager::FinPartie(short int etat) {
+	int nbPion(0);
+	for (int i = 0; i < NUM_COL; i++) {
+		nbPion += GetColHeight(i);
+	}
+	switch (etat) {
+	case 1: return PTS_VICTOIRE - (nbPion * 10); break; // Victoire IA
+	case 2: return (-1 * PTS_VICTOIRE) + (nbPion * 10); break; // Victoire joueur
+	default: return 0; break; // Grille pleine sans gagnant
 	}
 }
 
@@ -293,7 +292,15 @@ short int GameManager::DiagonaleM(short int x, short int y, CASE_STATE c) {
 	return size;
 }
 
-// TODO : Affiner fonction eval pareité des ligne
+void GameManager::FillTabEval(short int* tab, short int typeSerie) {
+	switch (typeSerie) {
+	case 1: /* Rien */ break;
+	case 2: tab[0] += PTS_SERIE_DEUX; break;
+	case 3: tab[0] += PTS_SERIE_TROIS; break;
+	case 4: tab[1] += 1; break;
+	}
+}
+
 short int* GameManager::Eval(short int column) {
 	short int positifNegatif;
 	short int *tabEval = new short int[2];
@@ -312,16 +319,6 @@ short int* GameManager::Eval(short int column) {
 	tabEval[0] *= positifNegatif;
 
 	return tabEval;
-}
-
-void GameManager::ClearGrid()
-{
-	for (int x = 0; x < NUM_COL; x++) {
-		for (int y = 0; y < NUM_LINES; y++) {
-			m_grid[x][y] = EMPTY;
-			cpy_grid[x][y] = m_grid[x][y];
-		}
-	}
 }
 
 void GameManager::IaAB(short int profondeur) {
