@@ -250,7 +250,7 @@ short int GameManager::DiagonaleD(short int x, short int y, CASE_STATE c) {
 
 	if (size == 2 || size == 3) { // chaines mortes
 		if (!(x - i >= 0) && !(y + i < 6) && (m_grid[x + j][y - j] != CASE_STATE::EMPTY)) return 1;		 //Coin Haut Gauche et et 1er pion Bas Droit rouge
-		else if (!(x + j < 7) && !(y - j >= 0) && (m_grid[x - i][y + i] != CASE_STATE::EMPTY)) return 1;		 //Coin Bas Droit et 1er pion Haut gauche rouge
+		else if (!(x + j < 7) && !(y - j >= 0) && (m_grid[x - i][y + i] != CASE_STATE::EMPTY)) return 1;	 //Coin Bas Droit et 1er pion Haut gauche rouge
 		else if ((x - i >= 0) && !(y + i < 6) && (m_grid[x + j][y - j] != CASE_STATE::EMPTY)) return 1;		 //Bord Haut 1er pion Bas Droit rouge
 		else if (!(x - i >= 0) && (y + i < 6) && (m_grid[x + j][y - j] != CASE_STATE::EMPTY)) return 1;		 //Bord Gauche 1er pion Bas Droit rouge
 		else if ((x + j < 7) && !(y - j >= 0) && (m_grid[x - i][y + i] != CASE_STATE::EMPTY)) return 1;		 //Bord Bas 1er pion Haut Gauche rouge
@@ -297,7 +297,7 @@ void GameManager::FillTabEval(short int* tab, short int typeSerie) {
 	case 1: /* Rien */ break;
 	case 2: tab[0] += PTS_SERIE_DEUX; break;
 	case 3: tab[0] += PTS_SERIE_TROIS; break;
-	case 4: tab[1] += 1; break;
+	default: tab[1] += 1; break;
 	}
 }
 
