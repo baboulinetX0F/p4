@@ -43,8 +43,11 @@ void GameManager::Sauvegarder() {
 	std::ofstream ecr("save.txt");
 	if (m_difficulte < 10)
 		ecr << m_difficulte;
-	else
-		ecr << 1;
+	else {
+		if(m_difficulte==10) ecr << 1;
+		else ecr << 2;
+	}
+
 	for (short int i = 1; i < 44; i++) {
 		ecr << suiteDeCoup[i];
 	}
@@ -73,10 +76,9 @@ void GameManager::Load() {
 			i++;
 		}
 	}
-	if (suiteDeCoup[0] == 1)
-		m_difficulte = 10;
-	else
-		m_difficulte = suiteDeCoup[0];
+	if (suiteDeCoup[0] == 1) m_difficulte = 10;
+	else if(suiteDeCoup[0] == 2)  m_difficulte = 12;
+	else m_difficulte = suiteDeCoup[0];
 	lect.close();
 }
 
@@ -89,7 +91,7 @@ void GameManager::Restart()
 
 std::string GameManager::MakeString() {
 	std::string chaine("");
-	char c='1';
+	char c='-';
 	chaine.push_back(c);
 	for (short int i = 1; i < 44; i++) {
 		c = suiteDeCoup[i]+48;
@@ -99,8 +101,10 @@ std::string GameManager::MakeString() {
 }
 
 void GameManager::PutInFile(short int col) {
-	std::ofstream ecr("pattern.txt", std::ofstream::app);
-	
+	std::string fichier;
+	if(m_difficulte==10) fichier="pattern10.txt";
+	else  fichier = "pattern12.txt";
+	std::ofstream ecr(fichier, std::ofstream::app);
 	if (col != 9) {
 		ecr << col << std::endl;
 	}
@@ -113,7 +117,10 @@ void GameManager::PutInFile(short int col) {
 
 short int GameManager::IsInFile() {
 	std::string chaine = MakeString();
-	std::ifstream lect("pattern.txt");
+	std::string fichier;
+	if (m_difficulte == 10) fichier = "pattern10.txt";
+	else  fichier = "pattern12.txt";
+	std::ifstream lect(fichier);
 	std::string line;
 	char coup;
 	while (getline(lect, line)){
