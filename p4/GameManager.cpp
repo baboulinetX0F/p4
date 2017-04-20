@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 GameManager GameManager::m_instance = GameManager();
 
@@ -40,10 +41,14 @@ void GameManager::DifficulteQuatre()
 
 void GameManager::Sauvegarder() {
 	std::ofstream ecr("save.txt");
-	ecr << m_difficulte;
+	if (m_difficulte < 10)
+		ecr << m_difficulte;
+	else
+		ecr << 1;
 	for (short int i = 1; i < 44; i++) {
 		ecr << suiteDeCoup[i];
 	}
+	ecr.close();
 }
 
 void GameManager::Load() {
@@ -68,7 +73,11 @@ void GameManager::Load() {
 			i++;
 		}
 	}
-	m_difficulte = suiteDeCoup[0];
+	if (suiteDeCoup[0] == 1)
+		m_difficulte = 10;
+	else
+		m_difficulte = suiteDeCoup[0];
+	lect.close();
 }
 
 void GameManager::Restart()
@@ -76,6 +85,46 @@ void GameManager::Restart()
 	InitGrid();
 	m_playerTurn = true;
 	m_gameState = 0;
+}
+
+std::string GameManager::MakeString() {
+	std::string chaine("");
+	char c='1';
+	chaine.push_back(c);
+	for (short int i = 1; i < 44; i++) {
+		c = suiteDeCoup[i]+48;
+		chaine.push_back(c);
+	}
+	return chaine;
+}
+
+void GameManager::PutInFile(short int col) {
+	std::ofstream ecr("pattern.txt", std::ofstream::app);
+	
+	if (col != 9) {
+		ecr << col << std::endl;
+	}
+	else {
+		std::string chaine = MakeString();
+		ecr << chaine << std::endl;
+	}
+	ecr.close();
+}
+
+short int GameManager::IsInFile() {
+	std::string chaine = MakeString();
+	std::ifstream lect("pattern.txt");
+	std::string line;
+	char coup;
+	while (getline(lect, line)){
+		if (line == chaine) {
+			lect.get(coup);
+			return (coup - 48);
+		}
+		getline(lect, line);
+	}
+	lect.close();
+	return 9;
 }
 
 /* FONCTION GENERALES / IHM */
@@ -92,7 +141,7 @@ void GameManager::InitGrid()
 			cpy_grid[x][y] = CASE_STATE::EMPTY;
 		}
 	}
-	for (short int i = 0; i < 43; i++) {
+	for (short int i = 0; i < 44; i++) {
 		suiteDeCoup[i] = 9;
 	}
 }
@@ -101,7 +150,8 @@ void GameManager::Update()
 {
 	if (m_gameState == 0) {
 		if (!m_playerTurn)
-			IaAB(m_difficulte);
+			if(m_difficulte<10)	IaAB(m_difficulte);
+			else IaABPattern(m_difficulte);
 	}
 }
 
@@ -324,6 +374,7 @@ short int* GameManager::Eval(short int column) {
 void GameManager::IaAB(short int profondeur) {
 	short int maxi(-1), alpha(-10000), beta(10000), tmp;
 	srand(static_cast<unsigned int>(time(NULL)));
+
 	for (short int i = 0; i < NUM_COL; i++)
 	{
 		if (GetColHeight(i) < NUM_LINES)
@@ -336,13 +387,51 @@ void GameManager::IaAB(short int profondeur) {
 
 			std::cout << tmp << std::endl;
 
-			if ((tmp > alpha) || ( (tmp==alpha) && (rand() % 2 == 0) ) ) {
+			if ((tmp > alpha) || ((tmp == alpha) && (rand() % 2 == 0))) {
 				alpha = tmp;
 				maxi = i;
 			}
+			
 		}
 	}
+
 	Jouer(COUL_IA, maxi);
+}
+
+void GameManager::IaABPattern(short int profondeur) {
+	short int maxi(-1), alpha(-10000), beta(10000), tmp;
+
+
+	short int pattern;
+
+	if ((pattern = IsInFile()) != 9) {
+		Jouer(COUL_IA, pattern);
+	}
+	else {
+		PutInFile(9);
+		for (short int i = 0; i < NUM_COL; i++)
+		{
+			if (GetColHeight(i) < NUM_LINES)
+			{
+				PushPiece(COUL_IA, i);
+
+				tmp = MinAB(profondeur - 1, i, alpha, beta);
+
+				PullPiece(i);
+
+				std::cout << tmp << std::endl;
+			
+				if (tmp > alpha) {
+					alpha = tmp;
+					maxi = i;
+				}				
+			}
+		}
+
+		Jouer(COUL_IA, maxi);
+		PutInFile(maxi);
+	}
+
 }
 
 short int GameManager::MinAB(short int profondeur, short int lastPion, short int alpha, short int beta) 

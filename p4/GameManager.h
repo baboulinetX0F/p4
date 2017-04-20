@@ -1,5 +1,5 @@
 #pragma once
-
+#include <string>
 
 // Etat d'une case de la grille de jeu
 enum CASE_STATE {
@@ -31,6 +31,12 @@ static const short int DIFFICULTE_HARDCORE = 10; //utilisation de paternes + aut
 class GameManager {
 
 public:
+
+	std::string MakeString();
+
+	void PutInFile(short int col);
+
+	short int IsInFile();
 
 	// Retourne l'instance unique de GameManager
 	static GameManager& Instance();
@@ -73,6 +79,7 @@ public:
 
 	// Gère le tour de l'IA version Coupe Alpha/Beta
 	void IaAB(short int profondeur);
+	void IaABPattern(short int profondeur);
 
 
 	// Change la difficulté
@@ -97,6 +104,8 @@ private:
 	CASE_STATE m_grid[NUM_COL][NUM_LINES];
 	/* cpy_grid : copie de la Grille de jeu qui permet de savoir quel pion vient d'être joué */
 	CASE_STATE cpy_grid[NUM_COL][NUM_LINES];
+
+	
 
 	// Variable d'état du jeu : s'arrete ou continue
 	short int m_gameState = 0;
