@@ -44,8 +44,7 @@ void GameManager::Sauvegarder() {
 	if (m_difficulte < 10)
 		ecr << m_difficulte;
 	else {
-		if(m_difficulte==10) ecr << 1;
-		else ecr << 2;
+		ecr << 1;
 	}
 
 	for (short int i = 1; i < 44; i++) {
@@ -77,7 +76,6 @@ void GameManager::Load() {
 		}
 	}
 	if (suiteDeCoup[0] == 1) m_difficulte = 10;
-	else if(suiteDeCoup[0] == 2)  m_difficulte = 12;
 	else m_difficulte = suiteDeCoup[0];
 	lect.close();
 }
@@ -103,7 +101,7 @@ std::string GameManager::MakeString() {
 void GameManager::PutInFile(short int col) {
 	std::string fichier;
 	if(m_difficulte==10) fichier="pattern10.txt";
-	else  fichier = "pattern12.txt";
+	else  fichier = "pattern8.txt";
 	std::ofstream ecr(fichier, std::ofstream::app);
 	if (col != 9) {
 		ecr << col << std::endl;
@@ -119,7 +117,7 @@ short int GameManager::IsInFile() {
 	std::string chaine = MakeString();
 	std::string fichier;
 	if (m_difficulte == 10) fichier = "pattern10.txt";
-	else  fichier = "pattern12.txt";
+	else  fichier = "pattern8.txt";
 	std::ifstream lect(fichier);
 	std::string line;
 	char coup;
@@ -157,7 +155,7 @@ void GameManager::Update()
 {
 	if (m_gameState == 0) {
 		if (!m_playerTurn)
-			if(m_difficulte<10)	IaAB(m_difficulte);
+			if(m_difficulte<8)	IaAB(m_difficulte);
 			else IaABPattern(m_difficulte);
 	}
 }
@@ -261,8 +259,8 @@ short int GameManager::FinPartie(short int etat) {
 		nbPion += GetColHeight(i);
 	}
 	switch (etat) {
-	case 1: return PTS_VICTOIRE - (nbPion * 10); break; // Victoire IA
-	case 2: return (-1 * PTS_VICTOIRE) + (nbPion * 10); break; // Victoire joueur
+	case 1: return PTS_VICTOIRE -(nbPion * 20); break; // Victoire IA
+	case 2: return (-1 * PTS_VICTOIRE) + (nbPion * 20); break; // Victoire joueur
 	default: return 0; break; // Grille pleine sans gagnant
 	}
 }
