@@ -22,10 +22,10 @@ static const short int PTS_SERIE_TROIS = 10;
 static const short int PTS_SERIE_DEUX = 1;
 
 // Niveaux de difficultés
-static const short int DIFFICULTE_FACILE = 4;
-static const short int DIFFICULTE_MOYEN = 6;
-static const short int DIFFICULTE_DIFFICILE = 8; //utilisation de paternes + auto apprendage
-static const short int DIFFICULTE_HARDCORE = 10; //utilisation de paternes + auto apprendage
+static const short int DIFFICULTE_FACILE = 6;
+static const short int DIFFICULTE_MOYEN = 8;
+static const short int DIFFICULTE_DIFFICILE = 10; //utilisation de paternes + auto apprendage
+static const short int DIFFICULTE_HARDCORE = 12; //utilisation de paternes + auto apprendage
 
 /* GameManager : Gère la logique du jeu */
 class GameManager {
